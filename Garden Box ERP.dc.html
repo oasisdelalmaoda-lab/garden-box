@@ -1272,8 +1272,8 @@ td .strong{font-weight:600;color:var(--ink)}
                   <td><span class="pill {{ c.tcTono }}">{{ c.tipoCli }}</span></td>
                     <td>{{ c.bebe }}</td>
                   <td>
-                    <select class="etapa-sel {{ c.tono }}" value="{{ c.etapa }}" onChange="{{ c.setEtapa }}">
-                      <sc-for list="{{ etapasSel }}" as="e" hint-placeholder-count="5"><option value="{{ e }}">{{ e }}</option></sc-for>
+                    <select class="etapa-sel {{ c.tono }}" value="{{ c.etapaSelVal }}" onChange="{{ c.setEtapa }}" title="Se calcula con sus compras. Seguimiento y Cerrado se marcan a mano.">
+                      <sc-for list="{{ c.etapaOps }}" as="e" hint-placeholder-count="3"><option value="{{ e.v }}">{{ e.l }}</option></sc-for>
                     </select>
                   </td>
                   <td>{{ c.producto }}</td>
@@ -3035,10 +3035,14 @@ const CLIENTES=[
   {nombre:'Valentina Ríos',bebe:'Normandía · 1 mes',etapa:'Suscrito',tipoCli:'Detallista',producto:'Cherry Redondo 500 g',contacto:'24 ago',canal:'WhatsApp'},
   {nombre:'Paula Restrepo',bebe:'La Flora · 9 meses',etapa:'Cerrado',tipoCli:'Detallista',producto:'Cherry Uva 500 g',contacto:'18 ago',canal:'Correo'}
 ];
-const C_TONO={'Suscrito':'ok','Seguimiento':'accent','Primer pedido':'warn','Nuevo lead':'neutral','Cerrado':'neutral'};
-const NL_VACIO={nombre:'',celular:'',correo:'',bebe:'',nac:'',canal:'WhatsApp',etapa:'Nuevo lead',tipoCli:'Detallista',nota:'',direccion:'',dirDetalle:''};
+const C_TONO={'Suscrito':'ok','Recurrente':'accent','Primera compra':'warn','Interesado':'neutral','Inactivo':'neutral','Seguimiento':'accent','Cerrado':'neutral'};
+// La etapa se calcula con las compras y suscripciones; solo estas dos se marcan a mano.
+const MARCAS_ETAPA=['Seguimiento','Cerrado'];
+const ETAPAS_AUTO=['Interesado','Primera compra','Recurrente','Suscrito','Inactivo'];
+const DIAS_INACTIVO=15;
+const NL_VACIO={nombre:'',celular:'',correo:'',bebe:'',nac:'',canal:'WhatsApp',etapa:'Automática',tipoCli:'Detallista',nota:'',direccion:'',dirDetalle:''};
 const FD_VACIO={nombre:'',celular:'',correo:'',bebe:'',nac:'',notas:'',
-  direccion:'',dirDetalle:'',docTipo:'CC',docNum:'',tipoCli:'Detallista',etapa:'Nuevo lead'};
+  direccion:'',dirDetalle:'',docTipo:'CC',docNum:'',tipoCli:'Detallista',etapa:'Automática'};
 
 class Component extends DCLogic {
   state={page:'tablero',sede:0,fVenta:'Todas',fEtapa:'Todas',fDian:'Todas',fMedio:'Todos',fEstado:'Todos',fProd:'Todos',fTipoCli:'Todos',fCrmTipo:'Todos',qCrm:'',vEst:null,fMenu:null,modal:false,toast:'',chatSel:0,msgNuevo:'',extra:{},
@@ -3489,8 +3493,8 @@ class Component extends DCLogic {
   /** Alto aproximado del menú: 8px de padding + 35px por opción. */
   altoMenu(campo){
     const n={producto:this.catalogoActual().length,canal:3,doc:5,estado:3,medio:6,
-      pfTipo:3,nlCanal:6,nlEtapa:5,nnTipo:5,gfCat:CATEGORIAS.length,gfMedio:MEDIOS_GASTO.length,
-      fdDoc:5,fdTipo:3,fdEtapa:6,
+      pfTipo:3,nlCanal:6,nlEtapa:3,nnTipo:5,gfCat:CATEGORIAS.length,gfMedio:MEDIOS_GASTO.length,
+      fdDoc:5,fdTipo:3,fdEtapa:3,
       sfProducto:this.catalogoActual().length,sfCanal:3}[campo]||4;
     return 8+n*35;
   }
@@ -4544,6 +4548,32 @@ class Component extends DCLogic {
     this.flash('Pedido marcado como '+estado.toLowerCase());
   }
 
+  /** Etapa de cada cliente a partir de sus ventas y suscripciones. */
+  etapasAuto(){
+    const s=this.state;
+    if(this._eaKey&&this._eaKey[0]===s.ventas&&this._eaKey[1]===s.susL&&this._eaKey[2]===s.clientesL) return this._eaVal;
+    const porId={}, porNom={};
+    const norm=x=>String(x||'').trim().toLowerCase();
+    (s.ventas||[]).forEach(v=>{
+      if(/anul/i.test(v.estado||'')) return;
+      const k=v.clienteId?('i:'+v.clienteId):('n:'+norm(v.cliente));
+      const m=v.clienteId?porId:porNom, kk=v.clienteId||norm(v.cliente);
+      const r=m[kk]||(m[kk]={n:0,ult:''});
+      r.n++; if((v.fechaIso||'')>r.ult) r.ult=v.fechaIso||'';
+    });
+    const sus={}; (s.susL||[]).forEach(x=>{ if(x.activa&&x.cliente_id) sus[x.cliente_id]=true; });
+    const lim=this.masDias(this.diaHoy(),-DIAS_INACTIVO);
+    const out={};
+    (s.clientesL||[]).forEach(c=>{
+      const a=porId[c.id]||{n:0,ult:''}, b=porNom[norm(c.nombre)]||{n:0,ult:''};
+      const n=a.n+b.n, ult=a.ult>b.ult?a.ult:b.ult;
+      out[c.id]=sus[c.id]?'Suscrito':!n?'Interesado':ult<lim?'Inactivo':n===1?'Primera compra':'Recurrente';
+    });
+    this._eaKey=[s.ventas,s.susL,s.clientesL]; this._eaVal=out;
+    return out;
+  }
+  etapaVista(c){ return MARCAS_ETAPA.includes(c.etapa)?c.etapa:(this.etapasAuto()[c.id]||'Interesado'); }
+
   cambiarEtapa(id,etapa){
     this.setState(st=>({clientesL:st.clientesL.map(c=>c.id===id?{...c,etapa}:c)}));
     if(!this.enNube()||!this.state.crmNube){ this.flash('Etapa cambiada · modo demo'); return; }
@@ -4560,7 +4590,7 @@ class Component extends DCLogic {
         bebe:c.bebeNombre||'',nac:c.bebeNac||'',notas:c.notas||'',
         direccion:c.direccion||'',dirDetalle:c.dirDetalle||'',
         docTipo:c.docTipo||'CC',docNum:c.docNum||'',
-        tipoCli:c.tipoCli||'Detallista',etapa:c.etapa||'Nuevo lead'}});
+        tipoCli:c.tipoCli||'Detallista',etapa:MARCAS_ETAPA.includes(c.etapa)?c.etapa:'Automática'}});
     if(this.enNube()&&this.state.crmNube&&!this.state.notasL[id]) this.cargarNotas(id);
   };
   cerrarFicha=()=>this.setState({ficha:null});
@@ -4626,7 +4656,7 @@ class Component extends DCLogic {
       nombre,celular:f.celular||null,correo:f.correo||null,
       direccion:f.direccion||null,direccion_detalle:f.dirDetalle||null,
       doc_tipo:f.docTipo||null,doc_numero:f.docNum||null,
-      tipo_cliente:f.tipoCli||'Detallista',etapa:f.etapa||'Nuevo lead',
+      tipo_cliente:f.tipoCli||'Detallista',etapa:f.etapa||'Automática',
       bebe_nombre:f.bebe||null,bebe_nacimiento:f.nac||null,notas:f.notas||null,
       actualizado_en:new Date().toISOString()};
     let {data,error}=await this.sb.from('clientes').update(campos).eq('id',id).select('id');
@@ -5268,7 +5298,11 @@ class Component extends DCLogic {
     const diasRest=prox?Math.ceil((t(prox.fin)-Date.now())/864e5):0;
     const pendTotal=s.pendL.length, pendOk=s.pendL.filter(p=>p.resuelto).length;
     const qOk=s.questL.filter(q=>(q.respuesta||'').trim()!=='').length;
-    const baseCli=s.clientesL;
+    const baseCli=s.clientesL.map(c=>{ const auto=this.etapasAuto()[c.id]||'Interesado';
+      const marca=MARCAS_ETAPA.includes(c.etapa)?c.etapa:'';
+      return {...c,etapa:marca||auto,etapaAuto:auto,
+        etapaOps:[{v:'Automática',l:marca?('Automática · '+auto):auto},...MARCAS_ETAPA.map(m=>({v:m,l:m}))],
+        etapaSelVal:marca||'Automática'}; });
     const qc=(s.qCrm||'').trim().toLowerCase();
     const coincide=c=>!qc||[c.nombre,c.bebe,c.bebeNombre,c.celular,c.correo,c.producto,c.canal,c.tipoCli]
       .some(x=>String(x||'').toLowerCase().includes(qc));
@@ -5282,7 +5316,7 @@ class Component extends DCLogic {
         wa:e=>this.abrirWa({cliente:c.nombre,producto:c.producto},c.celular,e),
         abrir:()=>this.abrirFicha(c.id),
         setEtapa:e=>this.cambiarEtapa(c.id,e.target.value)}));
-    const fic=s.ficha?s.clientesL.find(c=>c.id===s.ficha):null;
+    const fic=s.ficha?baseCli.find(c=>c.id===s.ficha):null;
     const fNotas=s.ficha?(s.notasL[s.ficha]||[]):[];
     const fVen=fic?ventas.filter(v=>v.cliente===fic.nombre):[];
     const fPag=fVen.filter(v=>v.estado==='Pagado');
@@ -5910,7 +5944,7 @@ class Component extends DCLogic {
       fdNac:s.fd.nac, fdNotas:s.fd.notas,
       fdDireccion:s.fd.direccion, fdDirDetalle:s.fd.dirDetalle,
       fdDocTipo:s.fd.docTipo||'CC', fdDocNum:s.fd.docNum,
-      fdTipoCli:s.fd.tipoCli||'Detallista', fdEtapa:s.fd.etapa||'Nuevo lead',
+      fdTipoCli:s.fd.tipoCli||'Detallista', fdEtapa:s.fd.etapa||'Automática',
       setFdNombre:e=>this.setState(st=>({fd:{...st.fd,nombre:e.target.value}})),
       setFdCelular:e=>this.setState(st=>({fd:{...st.fd,celular:e.target.value}})),
       setFdCorreo:e=>this.setState(st=>({fd:{...st.fd,correo:e.target.value}})),
@@ -6001,16 +6035,16 @@ class Component extends DCLogic {
               this.textoWa(p,{cliente:c.nombre,producto:c.producto})),'_blank','noopener'); }})); })(),
       tiposCrm:['Todos',...TIPOS_CLIENTE].map(l=>({label:l==='Todos'?'Todos':l,
         on:s.fCrmTipo===l?'on':'', pick:()=>this.setState({fCrmTipo:l,cTope:60})})),
-      etapas:[['Todas','Todas'],['Nuevo lead','Leads']].map(([v,l])=>({label:l,on:s.fEtapa===v?'on':'',
+      etapas:[['Todas','Todas'],['Interesado','Interesados']].map(([v,l])=>({label:l,on:s.fEtapa===v?'on':'',
         pick:()=>this.setState({fEtapa:v,cTope:60,fMenu:null})})),
-      etapasMenu:['Primer pedido','Suscrito','Seguimiento','Cerrado'].map(l=>({label:l,
+      etapasMenu:['Primera compra','Recurrente','Suscrito','Inactivo','Seguimiento','Cerrado'].map(l=>({label:l,
         fondo:s.fEtapa===l?'var(--paper)':'transparent',
         pick:()=>this.setState({fEtapa:l,cTope:60,fMenu:null})})),
-      fEtapaLabel:['Primer pedido','Suscrito','Seguimiento','Cerrado'].includes(s.fEtapa)?s.fEtapa:'Etapa',
-      fEtapaOn:['Primer pedido','Suscrito','Seguimiento','Cerrado'].includes(s.fEtapa)?'on':'',
+      fEtapaLabel:[...ETAPAS_AUTO,...MARCAS_ETAPA].filter(x=>x!=='Interesado').includes(s.fEtapa)?s.fEtapa:'Etapa',
+      fEtapaOn:[...ETAPAS_AUTO,...MARCAS_ETAPA].filter(x=>x!=='Interesado').includes(s.fEtapa)?'on':'',
       menuEtapa:s.fMenu==='etapa',
       abrirMenuEtapa:()=>this.setState(st=>({fMenu:st.fMenu==='etapa'?null:'etapa'})),
-      etapasSel:['Nuevo lead','Primer pedido','Suscrito','Seguimiento','Cerrado'],
+      etapasSel:['Automática',...MARCAS_ETAPA],
       dLead:s.lead?'flex':'none',
       abrirLead:()=>this.setState({lead:true,nl:{...NL_VACIO}}),
       cerrarLead:()=>this.setState({lead:false}),
@@ -6127,7 +6161,7 @@ class Component extends DCLogic {
             : 'Todo cobrado en '+etiqMes+'. Sin ventas pendientes ni fallidas.',
         };
       })(),
-      tbActivas:(()=>{ const n=s.clientesL.filter(c=>c.etapa==='Suscrito').length;
+      tbActivas:(()=>{ const n=s.clientesL.filter(c=>this.etapaVista(c)==='Suscrito').length;
         return n?n+(n===1?' suscrito':' suscritos'):'Ninguno suscrito'; })(),
       finIngresos:usd(ingMes),
       finIngresosDelta:mesPrev
@@ -6348,7 +6382,7 @@ class Component extends DCLogic {
             set:v=>this.setState(st=>({nvSel:null,pf:{...st.pf,tipo:v}}))},
           nlCanal:{lista:['WhatsApp','Instagram','Correo','Referido','Voz a voz','Otro'],actual:s.nl?s.nl.canal:'',
             set:v=>this.setState(st=>({nvSel:null,nl:{...st.nl,canal:v}}))},
-          nlEtapa:{lista:['Nuevo lead','Primer pedido','Suscrito','Recurrente','Cerrado'],actual:s.nl?s.nl.etapa:'',
+          nlEtapa:{lista:['Automática',...MARCAS_ETAPA],actual:s.nl?s.nl.etapa:'',
             set:v=>this.setState(st=>({nvSel:null,nl:{...st.nl,etapa:v}}))},
           nnTipo:{lista:N_TIPOS,actual:s.nn?s.nn.tipo:'',
             set:v=>this.setState(st=>({nvSel:null,nn:{...st.nn,tipo:v}}))},
@@ -6360,8 +6394,8 @@ class Component extends DCLogic {
             set:v=>this.setState(st=>({nvSel:null,fd:{...st.fd,docTipo:v}}))},
           fdTipo:{lista:TIPOS_CLIENTE,actual:s.fd.tipoCli||'Detallista',
             set:v=>this.setState(st=>({nvSel:null,fd:{...st.fd,tipoCli:v}}))},
-          fdEtapa:{lista:['Nuevo lead','Primer pedido','Suscrito','Seguimiento','Recurrente','Cerrado'],
-            actual:s.fd.etapa||'Nuevo lead',
+          fdEtapa:{lista:['Automática',...MARCAS_ETAPA],
+            actual:s.fd.etapa||'Automática',
             set:v=>this.setState(st=>({nvSel:null,fd:{...st.fd,etapa:v}}))},
           sfProducto:{lista:this.catalogoActual().map(x=>x.nombre),actual:s.sf?s.sf.producto:'',
             set:v=>this.setState(st=>({nvSel:null,sf:{...st.sf,producto:v}}))},
