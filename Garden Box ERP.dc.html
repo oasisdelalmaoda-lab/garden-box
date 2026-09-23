@@ -686,7 +686,7 @@ td .strong{font-weight:600;color:var(--ink)}
         <div>
           <div class="three">
             <div class="kpi"><div class="lab">Ingresos registrados</div><div class="val">{{ kIngresos }}</div><div class="delta">{{ kIngresosSub }}</div></div>
-            <div class="kpi"><div class="lab">Ventas en el registro</div><div class="val">{{ kTotal }}</div><div class="delta">{{ kTotalSub }}</div></div>
+            <div class="kpi"><div class="lab">Ventas</div><div class="val">{{ kTotal }}</div><div class="delta">{{ kTotalSub }}</div></div>
             <div class="kpi"><div class="lab">Margen del período</div><div class="val">{{ kMargen }}</div><div class="delta">{{ kMargenSub }}</div></div>
           </div>
           <div class="row-between">
@@ -3739,6 +3739,8 @@ class Component extends DCLogic {
       const nombreCli=(cli&&cli.nombre)||s.cliente_nombre;
       const zonaCli=(cli&&cli.bebeNombre)||s.zona;
       ['martes','viernes'].forEach(d=>{ if(!s[d]) return;
+        // Lo pasado está cerrado: solo se generan entregas de hoy en adelante.
+        if(dias[d]<this.diaHoy()) return;
         const pu=this.precioUnit(s.producto_nombre,s.tipo_cliente)||0;
         filas.push({fecha:dias[d],suscripcion_id:s.id,cliente_id:s.cliente_id,
           cliente_nombre:nombreCli,zona:zonaCli,producto_id:s.producto_id,
@@ -3746,7 +3748,7 @@ class Component extends DCLogic {
           tipo_cliente:s.tipo_cliente,estado:'Borrador'});
       });
     });
-    if(!filas.length){ this.flash('No hay suscripciones activas para esta semana'); return; }
+    if(!filas.length){ this.flash(dias.viernes<this.diaHoy()?'Esa semana ya pasó y está cerrada':'No hay suscripciones activas para las fechas que faltan'); return; }
     let {error}=await this.sb.from('entregas')
       .upsert(filas,{onConflict:'suscripcion_id,fecha',ignoreDuplicates:true});
     // El índice que evita duplicados nació parcial (solo filas con
@@ -4641,6 +4643,15 @@ class Component extends DCLogic {
       this.flash('No pude guardar: '+((error&&error.message)||'sin permiso'));
       return;
     }
+    const viejo=(prev.find(c=>c.id===id)||{}).nombre;
+    this.setState(st=>({ventas:(st.ventas||[]).map(v=>(v.clienteId===id||(viejo&&!v.clienteId&&v.cliente===viejo))?{...v,cliente:nombre,clienteId:id}:v)}));
+    try{
+      await this.sb.from('ventas').update({cliente_nombre:nombre}).eq('cliente_id',id).select('id');
+      if(viejo&&viejo!==nombre){
+        await this.sb.from('ventas').update({cliente_nombre:nombre,cliente_id:id}).is('cliente_id',null).eq('cliente_nombre',viejo).select('id');
+        await this.sb.from('entregas').update({cliente_nombre:nombre}).eq('cliente_id',id).select('id');
+      }
+    }catch(e){ if(window.odaEstado) window.odaEstado({modulo:'clientes',causa:'propagar nombre: '+(e.message||e)}); }
     this.flash('Datos del cliente guardados');
   };
   guardarGasto=async()=>{
@@ -5168,7 +5179,11 @@ class Component extends DCLogic {
   renderVals(){
     const s=this.state, p=s.page, chat=CHATS[s.chatSel]||CHATS[0];
     const d=k=>p===k?'block':'none';
+    const cliPorId={}; (s.clientesL||[]).forEach(c=>{ if(c.id) cliPorId[c.id]=c; });
     const ventas=s.ventas.map(v=>{ const fuente=v.fuente||'Manual';
+      // El nombre sale de la ficha del cliente, no de la copia guardada en la venta.
+      const cv=v.clienteId&&cliPorId[v.clienteId];
+      if(cv&&cv.nombre) v={...v,cliente:cv.nombre};
       // El costo se congela por venta (costoUnit): si mañana el invernadero
       // sube el precio, los documentos del pasado no se reescriben.
       const un=Math.max(1,Number(v.unidades)||1);
