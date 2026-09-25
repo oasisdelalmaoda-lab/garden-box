@@ -580,8 +580,7 @@ table.tcard{min-width:0;display:block}
       <div class="sb-cat">Automatización</div>
       <div class="nav-item {{ navBot }}" onClick="{{ goBot }}">
         <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 12a8 8 0 01-11.6 7.1L4 20.5l1.4-4.6A8 8 0 1121 12z"></path><path d="M9 11h.01M12 11h.01M15 11h.01"></path></svg>
-        <span class="txt">Bot de WhatsApp</span>
-        <span class="badge-mini">4</span>
+        <span class="txt">WhatsApp</span>
       </div>
       <sc-if value="{{ subBot }}" hint-placeholder-val="{{ false }}">
         <div class="sb-subs">
@@ -1597,7 +1596,7 @@ table.tcard{min-width:0;display:block}
 
       <section class="page" style="display:{{ dBot }}">
         <div class="page-head">
-          <p>Responde precios, toma pedidos y agenda la entrega. Lo que no sabe, te lo pasa a vos.</p>
+          <p>Mensajes listos para enviar desde el WhatsApp del negocio, según pedidos, pagos y clientes.</p>
         </div>
                 <div style="display:{{ dbBandeja }}">
         <div class="kpis">
@@ -1684,6 +1683,43 @@ table.tcard{min-width:0;display:block}
             </div>
           </div>
         </div>
+        </div>
+
+        <div style="display:{{ dbEnvios }}">
+          <p class="note" style="margin:0 0 16px;max-width:640px">Cada lista sale de los pedidos y clientes del sistema. Al tocar Abrir se muestra el mensaje para revisarlo y después se abre WhatsApp con el texto escrito.</p>
+          <sc-for list="{{ envios }}" as="a" hint-placeholder-count="4">
+            <div class="card card-pad" style="margin-bottom:14px">
+              <div style="display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap">
+                <div style="flex:1 1 240px;min-width:0">
+                  <h3 style="font-size:17px">{{ a.nombre }}</h3>
+                  <p class="note" style="margin-top:4px">{{ a.desc }}</p>
+                </div>
+                <span class="pill {{ a.tono }}" style="flex:none">{{ a.cuenta }}</span>
+              </div>
+              <div class="filters" style="margin:14px 0 0">
+                <sc-for list="{{ a.crit }}" as="c" hint-placeholder-count="3"><span class="fchip {{ c.on }}" onClick="{{ c.pick }}">{{ c.label }}</span></sc-for>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px">
+                <button class="btn btn-ghost btn-sm" style="margin-left:auto" onClick="{{ a.toggle }}">{{ a.verTxt }}</button>
+              </div>
+              <sc-if value="{{ a.abierto }}" hint-placeholder-val="{{ false }}">
+                <div style="margin-top:12px;border-top:1px solid var(--line)">
+                  <sc-if value="{{ a.vacio }}" hint-placeholder-val="{{ false }}"><div class="empty">{{ a.vacioTxt }}</div></sc-if>
+                  <sc-for list="{{ a.filas }}" as="f" hint-placeholder-count="3">
+                    <div style="display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)">
+                      <div style="min-width:0;flex:1">
+                        <div style="font-size:14px;font-weight:600;color:var(--ink)">{{ f.nombre }}</div>
+                        <div class="note" style="font-size:12px">{{ f.det }}</div>
+                      </div>
+                      <sc-if value="{{ f.puede }}" hint-placeholder-val="{{ true }}"><button class="btn btn-ghost btn-sm" style="flex:none" onClick="{{ f.abrir }}">Abrir</button></sc-if>
+                      <sc-if value="{{ f.hecho }}" hint-placeholder-val="{{ false }}"><button class="pill ok" style="flex:none;border:none;cursor:pointer" onClick="{{ f.abrir }}">Abierto</button></sc-if>
+                      <sc-if value="{{ f.noPuede }}" hint-placeholder-val="{{ false }}"><span class="pill neutral" style="flex:none">Sin celular</span></sc-if>
+                    </div>
+                  </sc-for>
+                </div>
+              </sc-if>
+            </div>
+          </sc-for>
         </div>
 
         <div style="display:{{ dbPlantillas }}">
@@ -2788,7 +2824,7 @@ const BIT_TABS=[['tiempo','Reuniones y tiempo'],['crono','Cronograma'],['pend','
 // módulo sin esa pestaña ni el contador de horas.
 const ODA_CORREOS=['a.suarez@oasisdelalma.co'];
 const TITLES={tablero:'Tablero',ventas:'Ventas',prod:'Productos',ent:'Entregas',crm:'CRM / Clientes',fin:'Finanzas / P&L',
-  bot:'Bot de WhatsApp',fe:'Factura electrónica',sop:'Soporte ODA',bit:'Bitácora de montaje'};
+  bot:'WhatsApp',fe:'Factura electrónica',sop:'Soporte ODA',bit:'Bitácora de montaje'};
 const CHATS=[
   {hora:'07:12',fechaIso:'2026-08-24',respMin:1,compra:true,linkPago:true,
     familia:'Juliana Mesa',canal:'WhatsApp',intencion:'Precio y variedades',estado:'Resuelto por el bot',
@@ -2837,7 +2873,7 @@ const CHATS=[
     ]}
 ];
 const CH_TONO={'Resuelto por el bot':'ok','Escalado a ti':'warn','Esperando respuesta':'neutral'};
-const BOT_TABS=[['bandeja','Bandeja'],['plantillas','Plantillas'],['agente','Agente IA'],['informe','Informe']];
+const BOT_TABS=[['envios','Envíos'],['plantillas','Plantillas'],['informe','Informe']];
 // Mensajes prediseñados. Van por enlace prellenado: el ERP arma el
 // texto y alguien le da enviar desde el WhatsApp del negocio.
 const PLANTILLAS_DEF=[
@@ -3205,7 +3241,7 @@ const FD_VACIO={nombre:'',celular:'',correo:'',bebe:'',nac:'',notas:'',
 
 class Component extends DCLogic {
   state={page:'tablero',sede:0,fVenta:'Todas',fEtapa:'Todas',fDian:'Todas',fMedio:'Todos',fEstado:'Todos',fProd:'Todos',fTipoCli:'Todos',fCrmTipo:'Todos',qCrm:'',vEst:null,fMenu:null,modal:false,toast:'',chatSel:0,msgNuevo:'',extra:{},
-    nv:{cliente:'',clienteId:null,producto:CATALOGO[0].nombre,tipoCli:'Detallista',cant:{},zona:'',direccion:'',dirDetalle:'',unidades:'',valor:'',medio:'Bold',estado:'Pendiente',
+    nv:{cliente:'',clienteId:null,producto:CATALOGO[0].nombre,tipoCli:'Detallista',cant:{},zona:'',direccion:'',dirDetalle:'',unidades:'',valor:'',medio:'Transferencia Bold',estado:'Pendiente',
       docTipo:'CC',docNum:'',correo:'',celular:''},ventas:VENTAS,
     vTab:'registro',fFuente:'Todas',corte:'2026-10-01',
     fRango:'todas',fDesde:'',fHasta:'',
@@ -3224,7 +3260,7 @@ class Component extends DCLogic {
     auth:{correo:'',clave:'',err:'',cargando:false},verClave:false,
     sopTab:'reporte',asunto:'',desc:'',urg:'Media',fotos:[],errAsunto:false,sopError:false,enviando:false,
     tickets:null,salud:null,saludCargando:true,abiertoPorque:{},motivos:{},
-    botTab:'bandeja',ag:AG_DEF,ciDias:'30',ciAtribF:'chat',agMsg:'',agGuardado:''};
+    botTab:'envios',envCrit:{reactivar:'30'},envPlt:{},envAbierto:null,envHechos:{},ag:AG_DEF,ciDias:'30',ciAtribF:'chat',agMsg:'',agGuardado:''};
 
   // ── Conexión a Supabase ───────────────────────────────────────
   // Si la librería no carga (archivo abierto sin internet), el ERP
@@ -3651,7 +3687,7 @@ class Component extends DCLogic {
 
   /** Alto aproximado del menú: 8px de padding + 35px por opción. */
   altoMenu(campo){
-    const n={producto:this.catalogoActual().length,canal:3,doc:5,estado:3,medio:6,
+    const n={producto:this.catalogoActual().length,canal:3,doc:5,estado:3,medio:3,
       pfTipo:3,nlCanal:6,nlEtapa:3,nnTipo:5,gfCat:CATEGORIAS.length,gfMedio:MEDIOS_GASTO.length,
       fdDoc:5,fdTipo:3,fdEtapa:3,nvZona:4,fdZona:4,sfZona:4,nlZona:4,
       sfProducto:this.catalogoActual().length,sfCanal:3}[campo]||4;
@@ -3707,7 +3743,7 @@ class Component extends DCLogic {
     const cat0=this.catalogoActual()[0]||CATALOGO[0];
     return {id:null,cliente:'',clienteId:null,producto:cat0.nombre,tipoCli:'Detallista',
       cant:{},
-      unidades:'',valor:'',medio:'Bold',estado:'Pendiente',
+      unidades:'',valor:'',medio:'Transferencia Bold',estado:'Pendiente',
       entrega:this.proximaEntrega(),
       docTipo:'CC',docNum:'',correo:'',celular:'',zona:'',direccion:'',dirDetalle:''};
   }
@@ -3813,6 +3849,62 @@ class Component extends DCLogic {
       if(!up.ok) return null;
       return SB_URL+'/storage/v1/object/public/whatsapp/'+name;
     }catch(e){ return null; }
+  }
+
+  /** Envíos listos: cada regla cruza pedidos y clientes con una plantilla.
+   *  No envía nada solo: arma la lista y cada mensaje se revisa antes de abrir WhatsApp. */
+  enviosListos(s){
+    const hoy=this.diaHoy();
+    const mas=(iso,n)=>{ const p=iso.split('-'), d=new Date(+p[0],+p[1]-1,+p[2]+n);
+      return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-'); };
+    const proxDia=w=>{ for(let i=1;i<=7;i++){ const k=mas(hoy,i); const p=k.split('-');
+      if(new Date(+p[0],+p[1]-1,+p[2]).getDay()===w) return k; } return hoy; };
+    const cli=s.clientesL||[];
+    const celDe=v=>v.celular||((cli.find(c=>c.id&&c.id===v.clienteId)||cli.find(c=>c.nombre===v.cliente)||{}).celular)||'';
+    const plata=n=>'$'+Number(n||0).toLocaleString('es-CO',{maximumFractionDigits:0});
+    const ctxV=v=>{ const u=Number(v.unidades)||1;
+      return {cliente:v.cliente,producto:v.producto,unidades:u+(u===1?' paquete':' paquetes'),
+        valor:plata(v.valorNum),pedido:v.pedido||'',
+        fecha:v.entregaFecha?this.fechaCortaIso(v.entregaFecha):'',
+        dia:v.entregaFecha?this.diaSemana(v.entregaFecha):''}; };
+    const ventas=(s.ventas||[]).filter(v=>v.estado!=='Fallido');
+    const crit=s.envCrit||{};
+    const REGLAS=[
+      {clave:'cobro',nombre:'Cobro pendiente',plt:'cobro',
+       desc:'Pedidos con el pago en estado Pendiente.',
+       ops:[['todos','Todos'],['entregados','Ya entregados'],['proximos','Por entregar']],
+       filas:c=>ventas.filter(v=>v.estado==='Pendiente'
+           &&(c==='todos'||(c==='entregados'?(v.entregaFecha&&v.entregaFecha<hoy):(!v.entregaFecha||v.entregaFecha>=hoy))))
+         .map(v=>({key:v.id||v.pedido,nombre:v.cliente,det:(v.pedido||'')+' · '+plata(v.valorNum),cel:celDe(v),ctx:ctxV(v)}))},
+      {clave:'reactivar',nombre:'Reactivar clientes',plt:'reactivar',
+       desc:'Clientes cuyo último pedido fue hace más de los días elegidos.',
+       ops:[['7','7 días'],['15','15 días'],['30','30 días'],['45','45 días'],['60','60 días'],['90','90 días']],
+       filas:c=>{ const lim=mas(hoy,-Math.max(1,Number(c)||45)); const ult={};
+         ventas.forEach(v=>{ const k=v.clienteId||v.cliente; const f=String(v.fechaIso||'').slice(0,10);
+           if(!ult[k]||f>ult[k].f) ult[k]={f,v}; });
+         return Object.keys(ult).map(k=>ult[k]).filter(x=>x.f&&x.f<lim).sort((a,b)=>a.f<b.f?1:-1)
+           .map(x=>({key:x.v.clienteId||x.v.cliente,nombre:x.v.cliente,
+             det:'Último pedido '+this.fechaCortaIso(x.f)+' · '+x.v.producto,cel:celDe(x.v),
+             ctx:{cliente:x.v.cliente,producto:x.v.producto}})); }},
+    ];
+    const plts=s.plt||[];
+    return REGLAS.map(r=>{
+      const c=crit[r.clave]||r.ops[0][0];
+      const pk=(s.envPlt||{})[r.clave]||(plts.find(p=>p.clave===r.plt)||plts[0]||{}).clave;
+      const p=plts.find(x=>x.clave===pk)||plts[0]||{texto:''};
+      const filas=r.filas(c);
+      const abierto=s.envAbierto===r.clave;
+      return {clave:r.clave,nombre:r.nombre,desc:r.desc,
+        cuenta:filas.length+(filas.length===1?' cliente':' clientes'),tono:filas.length?'accent':'neutral',
+        crit:r.ops.map(([v,l])=>({label:l,on:c===v?'on':'',
+          pick:()=>this.setState(st=>({envCrit:{...(st.envCrit||{}),[r.clave]:v}}))})),
+        abierto,verTxt:abierto?'Ocultar':'Ver lista',
+        toggle:()=>this.setState(st=>({envAbierto:st.envAbierto===r.clave?null:r.clave})),
+        vacio:!filas.length,vacioTxt:'Nadie cumple este criterio hoy.',
+        filas:filas.map(f=>{ const hk=r.clave+'|'+c+'|'+f.key; const hecho=!!(s.envHechos||{})[hk];
+          return {nombre:f.nombre,det:f.det,puede:!!f.cel&&!hecho,noPuede:!f.cel,hecho:hecho&&!!f.cel,
+            abrir:()=>{ this.setState(st=>({envHechos:{...(st.envHechos||{}),[hk]:true}})); this.enviarWa(p,f.ctx,f.cel); }}; })};
+    });
   }
 
   /** Saludo según la hora de Bogotá: es lo primero que lee el cliente. */
@@ -5003,8 +5095,8 @@ class Component extends DCLogic {
     const sinTabla=!sinSesion&&this._agNube===false;
     return {
       botTabs:BOT_TABS.map(([v,l])=>({label:l,on:tab===v?'on':'',pick:()=>this.setState({page:'bot',botTab:v})})),
-      dbBandeja:tab==='bandeja'?'block':'none',
-      dbAgente:tab==='agente'?'block':'none',
+      dbBandeja:'none',
+      dbAgente:'none',
       dbInforme:tab==='informe'?'block':'none',
 
       agCanales:[
@@ -6006,6 +6098,8 @@ class Component extends DCLogic {
       waOpciones:(s.plt||[]).map(p=>({label:p.nombre,
         pick:()=>this.enviarWa(p,s.waMenu?s.waMenu.ctx:{},s.waMenu?s.waMenu.cel:'')})),
       dbPlantillas:s.botTab==='plantillas'?'block':'none',
+      dbEnvios:(!s.botTab||s.botTab==='envios'||s.botTab==='bandeja'||s.botTab==='agente')?'block':'none',
+      envios:this.enviosListos(s),
       waVars:WA_VARS,
       nuevaPlantilla:this.nuevaPlantilla,
       plantillas:(s.plt||[]).map(p=>({nombre:p.nombre,texto:p.texto,
@@ -6662,7 +6756,7 @@ class Component extends DCLogic {
           :c==='canal'?TIPOS_CLIENTE
           :c==='doc'?['CC','CE','NIT','PP','TI']
           :c==='estado'?['Pendiente','Pagado','Fallido']
-          :['Bold','Transferencia Bold','Transferencia Bancolombia','Efectivo contraentrega','Nequi','Paypal'];
+          :['Transferencia Bold','Bold','Efectivo contraentrega'];
         const campo=c==='producto'?'producto':c==='canal'?'tipoCli':c==='doc'?'docTipo':c==='estado'?'estado':'medio';
         const actual=s.nv[campo];
         return lista.map(l=>({label:l,on:actual===l?'on':'',
