@@ -2320,7 +2320,7 @@ Numeración     https://webservice.facturatech.co/v2/BETA/SincronizacionNumeraci
             <div class="field"><label>Dirección de entrega</label><input placeholder="Calle 5 # 12-34, apto 702" value="{{ fdDireccion }}" onChange="{{ setFdDireccion }}"></div>
             <div class="field"><label>Cómo llegar y a quién entregar</label><textarea placeholder="Portería, torre, apartamento, con quién se deja, horario que sirve, si hay que llamar antes." value="{{ fdDirDetalle }}" onChange="{{ setFdDirDetalle }}"></textarea></div>
             <div class="form-grid">
-              <div class="field"><label>Zona de entrega</label><input placeholder="Ej: Ciudad Jardín" value="{{ fdBebe }}" onChange="{{ setFdBebe }}"></div>
+              <div class="field"><label>Zona de entrega</label><button type="button" class="sel-btn" onClick="{{ abrirSelFdZona }}"><span>{{ fdZonaTxt }}</span><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"></path></svg></button></div>
               <div class="field"><label>Cliente desde</label><input type="date" value="{{ fdNac }}" onChange="{{ setFdNac }}"></div>
             </div>
             <div class="form-grid">
@@ -2413,9 +2413,12 @@ Numeración     https://webservice.facturatech.co/v2/BETA/SincronizacionNumeraci
       </div>
       <div class="form-grid">
         <div class="field"><label>Fecha de entrega</label><input type="date" value="{{ nvEntrega }}" onChange="{{ setNvEntrega }}"></div>
-        <div class="field"><label>Zona</label><input value="{{ nvZona }}" disabled=""></div>
+        <div class="field"><label>Zona</label><button type="button" class="sel-btn" onClick="{{ abrirSelNvZona }}"><span>{{ nvZonaTxt }}</span><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"></path></svg></button></div>
       </div>
       <p class="note" style="margin:-6px 0 14px">{{ nvEntregaNota }}</p>
+      <div class="field"><label>Dirección</label><input placeholder="Edificio o conjunto, calle y número" value="{{ nvDireccion }}" onChange="{{ setNvDireccion }}"></div>
+      <div class="field"><label>Cómo llegar</label><input placeholder="Torre, apto, portería, a quién se deja" value="{{ nvDirDetalle }}" onChange="{{ setNvDirDetalle }}"></div>
+      <p class="note" style="margin:-6px 0 14px">Zona y dirección se guardan también en la ficha del cliente.</p>
       <div class="field"><label>Estado del pago</label><button type="button" class="sel-btn" onClick="{{ abrirSelEstado }}"><span>{{ nvEstado }}</span><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"></path></svg></button></div>
       <div class="field"><label>Medio de pago</label><button type="button" class="sel-btn" onClick="{{ abrirSelMedio }}"><span>{{ nvMedio }}</span><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"></path></svg></button></div>
       
@@ -2506,7 +2509,7 @@ Numeración     https://webservice.facturatech.co/v2/BETA/SincronizacionNumeraci
         <div class="field"><label>Producto</label><button type="button" class="sel-btn" onClick="{{ abrirSelSfProd }}"><span>{{ sfProducto }}</span><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"></path></svg></button></div>
         <div class="field"><label>Canal</label><button type="button" class="sel-btn" onClick="{{ abrirSelSfCanal }}"><span>{{ sfTipoCli }}</span><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"></path></svg></button></div>
         <div class="field"><label>Paquetes por entrega</label><input placeholder="1" value="{{ sfUnidades }}" onChange="{{ setSfUnidades }}"></div>
-        <div class="field"><label>Zona</label><input placeholder="Ej: Ciudad Jardín" value="{{ sfZona }}" onChange="{{ setSfZona }}"></div>
+        <div class="field"><label>Zona</label><button type="button" class="sel-btn" onClick="{{ abrirSelSfZona }}"><span>{{ sfZonaTxt }}</span><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"></path></svg></button></div>
       </div>
       <label style="display:block;font-family:var(--font-body);font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--muted-2);margin-bottom:6px">Días de entrega</label>
       <div style="display:flex;gap:18px;margin-bottom:14px">
@@ -2591,7 +2594,7 @@ Numeración     https://webservice.facturatech.co/v2/BETA/SincronizacionNumeraci
       <div class="field"><label>Dirección de entrega</label><input placeholder="Calle 5 # 12-34, apto 702" value="{{ nlDireccion }}" onChange="{{ setNlDireccion }}"></div>
       <div class="field"><label>Cómo llegar y a quién entregar</label><textarea placeholder="Portería, torre, apartamento, con quién se deja, horario que sirve, si hay que llamar antes." value="{{ nlDirDetalle }}" onChange="{{ setNlDirDetalle }}"></textarea></div>
       <div class="form-grid">
-        <div class="field"><label>Zona de entrega</label><input placeholder="Ej: Ciudad Jardín" value="{{ nlBebe }}" onChange="{{ setNlBebe }}"></div>
+        <div class="field"><label>Zona de entrega</label><button type="button" class="sel-btn" onClick="{{ abrirSelNlZona }}"><span>{{ nlZonaTxt }}</span><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"></path></svg></button></div>
         <div class="field"><label>Cliente desde</label><input type="date" value="{{ nlNac }}" onChange="{{ setNlNac }}"></div>
       </div>
       <div class="form-grid">
@@ -3044,13 +3047,14 @@ const C_TONO={'Suscrito':'ok','Recurrente':'accent','Primera compra':'warn','Int
 const MARCAS_ETAPA=['Seguimiento','Cerrado'];
 const ETAPAS_AUTO=['Interesado','Primera compra','Recurrente','Suscrito','Inactivo'];
 const DIAS_INACTIVO=15;
+const ZONAS=['Oeste','Sur','Cristales','Norte'];
 const NL_VACIO={nombre:'',celular:'',correo:'',bebe:'',nac:'',canal:'WhatsApp',etapa:'Automática',tipoCli:'Detallista',nota:'',direccion:'',dirDetalle:''};
 const FD_VACIO={nombre:'',celular:'',correo:'',bebe:'',nac:'',notas:'',
   direccion:'',dirDetalle:'',docTipo:'CC',docNum:'',tipoCli:'Detallista',etapa:'Automática'};
 
 class Component extends DCLogic {
   state={page:'tablero',sede:0,fVenta:'Todas',fEtapa:'Todas',fDian:'Todas',fMedio:'Todos',fEstado:'Todos',fProd:'Todos',fTipoCli:'Todos',fCrmTipo:'Todos',qCrm:'',vEst:null,fMenu:null,modal:false,toast:'',chatSel:0,msgNuevo:'',extra:{},
-    nv:{cliente:'',clienteId:null,producto:CATALOGO[0].nombre,tipoCli:'Detallista',unidades:'1',valor:'',medio:'Bold',estado:'Pendiente',
+    nv:{cliente:'',clienteId:null,producto:CATALOGO[0].nombre,tipoCli:'Detallista',cant:{},zona:'',direccion:'',dirDetalle:'',unidades:'',valor:'',medio:'Bold',estado:'Pendiente',
       docTipo:'CC',docNum:'',correo:'',celular:''},ventas:VENTAS,
     vTab:'registro',fFuente:'Todas',corte:'2026-10-01',
     fRango:'todas',fDesde:'',fHasta:'',
@@ -3498,7 +3502,7 @@ class Component extends DCLogic {
   altoMenu(campo){
     const n={producto:this.catalogoActual().length,canal:3,doc:5,estado:3,medio:6,
       pfTipo:3,nlCanal:6,nlEtapa:3,nnTipo:5,gfCat:CATEGORIAS.length,gfMedio:MEDIOS_GASTO.length,
-      fdDoc:5,fdTipo:3,fdEtapa:3,
+      fdDoc:5,fdTipo:3,fdEtapa:3,nvZona:4,fdZona:4,sfZona:4,nlZona:4,
       sfProducto:this.catalogoActual().length,sfCanal:3}[campo]||4;
     return 8+n*35;
   }
@@ -3551,10 +3555,10 @@ class Component extends DCLogic {
   ventaEnBlanco(){
     const cat0=this.catalogoActual()[0]||CATALOGO[0];
     return {id:null,cliente:'',clienteId:null,producto:cat0.nombre,tipoCli:'Detallista',
-      cant:{[cat0.nombre]:'1'},
-      unidades:'1',valor:'',medio:'Bold',estado:'Pendiente',
+      cant:{},
+      unidades:'',valor:'',medio:'Bold',estado:'Pendiente',
       entrega:this.proximaEntrega(),
-      docTipo:'CC',docNum:'',correo:'',celular:''};
+      docTipo:'CC',docNum:'',correo:'',celular:'',zona:'',direccion:'',dirDetalle:''};
   }
 
   editarVenta=(v)=>{
@@ -3567,7 +3571,9 @@ class Component extends DCLogic {
         valor:String(v.valorNum||''),medio:v.medio&&v.medio!=='—'?v.medio:'Bold',
         estado:v.estado||'Pendiente',docTipo:'CC',docNum:'',
         entrega:v.entregaFecha||'',
-        correo:v.correo||'',celular:v.celular||''}});
+        correo:v.correo||'',celular:v.celular||'',
+        ...(()=>{ const c=(this.state.clientesL||[]).find(x=>x.id===v.clienteId)||{};
+          return {zona:c.bebeNombre||v.entregaZona||'',direccion:c.direccion||'',dirDetalle:c.dirDetalle||''}; })()}});
   };
 
   borrarVenta=async()=>{
@@ -3939,10 +3945,10 @@ class Component extends DCLogic {
       const hoy=new Date().toISOString().slice(0,10);
       const clienteId=nv.clienteId
         ? await this.clienteFacturacion({id:nv.clienteId,nombre:nv.cliente.trim(),celular,correo,
-            docTipo:nv.docTipo,docNum})
+            docTipo:nv.docTipo,docNum,zona:(nv.zona||'').trim(),direccion:(nv.direccion||'').trim(),dirDetalle:(nv.dirDetalle||'').trim()})
         : await this.clienteFacturacion({nombre:nv.cliente.trim(),celular,correo,
-            docTipo:nv.docTipo,docNum});
-      const zonaCli=(()=>{ const c=(this.state.clientesL||[]).find(x=>x.id===clienteId);
+            docTipo:nv.docTipo,docNum,zona:(nv.zona||'').trim(),direccion:(nv.direccion||'').trim(),dirDetalle:(nv.dirDetalle||'').trim()});
+      const zonaCli=(nv.zona||'').trim()||(()=>{ const c=(this.state.clientesL||[]).find(x=>x.id===clienteId);
         return c?(c.bebeNombre||''):''; })();
       const base={fecha:hoy,cliente_nombre:nv.cliente.trim(),
         cliente_id:clienteId,celular,correo,
@@ -4005,7 +4011,9 @@ class Component extends DCLogic {
         id:c.id, nombre:c.nombre,
         sub:[c.celular,c.correo].filter(Boolean).join(' · ')||'Sin datos de contacto',
         usar:()=>this.setState(st=>({nv:{...st.nv,cliente:c.nombre,clienteId:c.id,
-          celular:st.nv.celular||c.celular||'',correo:st.nv.correo||c.correo||''}})),
+          celular:st.nv.celular||c.celular||'',correo:st.nv.correo||c.correo||'',
+          zona:st.nv.zona||c.bebeNombre||'',direccion:st.nv.direccion||c.direccion||'',
+          dirDetalle:st.nv.dirDetalle||c.dirDetalle||''}})),
       }));
   }
 
@@ -4014,8 +4022,10 @@ class Component extends DCLogic {
    *  busca: evita crear un duplicado cuando la familia cambió de celular. */
   async clienteFacturacion(c){
     try{
-      const campos={nombre:c.nombre,celular:c.celular,correo:c.correo,
-        doc_tipo:c.docNum?c.docTipo:null,doc_numero:c.docNum};
+      let campos={nombre:c.nombre,celular:c.celular,correo:c.correo,
+        doc_tipo:c.docNum?c.docTipo:null,doc_numero:c.docNum,
+        bebe_nombre:c.zona||null,direccion:c.direccion||null,direccion_detalle:c.dirDetalle||null};
+      campos=Object.fromEntries(Object.entries(campos).filter(([,v])=>v));
       if(c.id){
         // Solo se escribe lo que el formulario trajo: un campo vacío no
         // debe borrar el dato que ya tenía la ficha.
@@ -6347,8 +6357,10 @@ class Component extends DCLogic {
       nvEstado:s.nv.estado||'Pendiente',
       nvEntrega:s.nv.entrega||'',
       setNvEntrega:e=>{ const v=e.target.value; this.setState(st=>({nv:{...st.nv,entrega:v}})); },
-      nvZona:(()=>{ const c=(s.clientesL||[]).find(x=>x.id===s.nv.clienteId);
-        return c&&c.bebeNombre?c.bebeNombre:'—'; })(),
+      nvZona:s.nv.zona||'', nvDireccion:s.nv.direccion||'', nvDirDetalle:s.nv.dirDetalle||'',
+      setNvZona:e=>{ const v=e.target.value; this.setState(st=>({nv:{...st.nv,zona:v}})); },
+      setNvDireccion:e=>{ const v=e.target.value; this.setState(st=>({nv:{...st.nv,direccion:v}})); },
+      setNvDirDetalle:e=>{ const v=e.target.value; this.setState(st=>({nv:{...st.nv,dirDetalle:v}})); },
       nvEntregaNota:(()=>{ const fe=s.nv.entrega;
         if(!fe) return 'Sin fecha de entrega la venta no aparece en la ruta de la semana.';
         const dia=this.diaSemana(fe);
@@ -6372,6 +6384,10 @@ class Component extends DCLogic {
       abrirSelNnTipo:e=>this.abrirSel('nnTipo',e),
       abrirSelGfCat:e=>this.abrirSel('gfCat',e),
       abrirSelGfMedio:e=>this.abrirSel('gfMedio',e),
+      abrirSelNvZona:e=>this.abrirSel('nvZona',e), abrirSelFdZona:e=>this.abrirSel('fdZona',e),
+      abrirSelNlZona:e=>this.abrirSel('nlZona',e), abrirSelSfZona:e=>this.abrirSel('sfZona',e),
+      nvZonaTxt:s.nv.zona||'Elegí la zona', fdZonaTxt:(s.fd&&s.fd.bebe)||'Elegí la zona',
+      nlZonaTxt:(s.nl&&s.nl.bebe)||'Elegí la zona', sfZonaTxt:(s.sf&&s.sf.zona)||'Elegí la zona',
       cerrarSel:()=>this.setState({nvSel:null}),
       selAbierto:!!s.nvSel,
       selTop:s.nvSel?s.nvSel.y+'px':'0px',
@@ -6390,6 +6406,14 @@ class Component extends DCLogic {
             set:v=>this.setState(st=>({nvSel:null,nl:{...st.nl,etapa:v}}))},
           nnTipo:{lista:N_TIPOS,actual:s.nn?s.nn.tipo:'',
             set:v=>this.setState(st=>({nvSel:null,nn:{...st.nn,tipo:v}}))},
+          nvZona:{lista:ZONAS,actual:s.nv.zona||'',
+            set:v=>this.setState(st=>({nvSel:null,nv:{...st.nv,zona:v}}))},
+          fdZona:{lista:ZONAS,actual:s.fd.bebe||'',
+            set:v=>this.setState(st=>({nvSel:null,fd:{...st.fd,bebe:v}}))},
+          nlZona:{lista:ZONAS,actual:s.nl.bebe||'',
+            set:v=>this.setState(st=>({nvSel:null,nl:{...st.nl,bebe:v}}))},
+          sfZona:{lista:ZONAS,actual:s.sf?s.sf.zona:'',
+            set:v=>this.setState(st=>({nvSel:null,sf:{...st.sf,zona:v}}))},
           gfCat:{lista:CATEGORIAS,actual:s.gf?s.gf.categoria:'',
             set:v=>this.setState(st=>({nvSel:null,gf:{...st.gf,categoria:v}}))},
           gfMedio:{lista:MEDIOS_GASTO,actual:s.gf?s.gf.medio:'',
