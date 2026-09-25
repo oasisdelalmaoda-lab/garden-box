@@ -2890,7 +2890,7 @@ const CHATS=[
     ]}
 ];
 const CH_TONO={'Resuelto por el bot':'ok','Escalado a ti':'warn','Esperando respuesta':'neutral'};
-const BOT_TABS=[['envios','Envíos'],['plantillas','Plantillas'],['informe','Informe']];
+const BOT_TABS=[['envios','Envíos'],['plantillas','Plantillas']];
 // Mensajes prediseñados. Van por enlace prellenado: el ERP arma el
 // texto y alguien le da enviar desde el WhatsApp del negocio.
 const PLANTILLAS_DEF=[
@@ -5114,7 +5114,7 @@ class Component extends DCLogic {
       botTabs:BOT_TABS.map(([v,l])=>({label:l,on:tab===v?'on':'',pick:()=>this.setState({page:'bot',botTab:v})})),
       dbBandeja:'none',
       dbAgente:'none',
-      dbInforme:tab==='informe'?'block':'none',
+      dbInforme:'none',
 
       agCanales:[
         {nombre:'WhatsApp Business',dot:'var(--warn)',color:'var(--warn)',estado:'Sin conectar',
@@ -6116,7 +6116,7 @@ class Component extends DCLogic {
       waOpciones:(s.plt||[]).map(p=>({label:p.nombre,
         pick:()=>this.enviarWa(p,s.waMenu?s.waMenu.ctx:{},s.waMenu?s.waMenu.cel:'')})),
       dbPlantillas:s.botTab==='plantillas'?'block':'none',
-      dbEnvios:(!s.botTab||s.botTab==='envios'||s.botTab==='bandeja'||s.botTab==='agente')?'block':'none',
+      dbEnvios:s.botTab!=='plantillas'?'block':'none',
       envios:this.enviosListos(s),
       waVars:WA_VARS,
       nuevaPlantilla:this.nuevaPlantilla,
