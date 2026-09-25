@@ -455,7 +455,14 @@ html,body{overscroll-behavior:none;-webkit-tap-highlight-color:transparent}
 .kpi .val{font-size:20px;margin-top:6px}
 .kpi .lab{font-size:9.5px;letter-spacing:.14em}
 .kpi .delta{font-size:11.5px}
-.kpis{gap:10px;margin-bottom:14px}
+.kpis,.app .kpis{grid-template-columns:repeat(2,minmax(0,1fr)) !important;gap:10px;margin-bottom:14px}
+.kpi .val{font-size:clamp(16px,5vw,20px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body{background:var(--brand-surface)}
+.app{background:var(--paper)}
+.m-mes{flex-wrap:nowrap !important;gap:8px !important;margin-bottom:14px !important}
+.m-mes>span{min-width:0 !important;flex:1;font-size:15px !important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.m-mes .btn{min-height:38px;width:36px;padding:0 !important;flex:none}
+.m-mes .btn:last-child{width:auto;padding:0 8px !important;font-size:9.5px;letter-spacing:0}
 .card-pad{padding:16px}
 .filters{flex-wrap:nowrap;overflow-x:auto;margin:0 -16px 14px;padding:0 16px 2px;scrollbar-width:none}
 .filters::-webkit-scrollbar{display:none}
@@ -635,7 +642,7 @@ table.tcard{min-width:0;display:block}
 
     <div class="content">
       <section class="page" style="display:{{ dTablero }}">
-        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px">
+        <div class="m-mes" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px">
           <button class="btn btn-ghost btn-sm" style="padding:6px 12px" onClick="{{ gMesPrev }}">‹</button>
           <span style="font-size:19px;font-weight:700;letter-spacing:-.01em;min-width:190px;text-align:center">{{ gMesTitulo }}</span>
           <button class="btn btn-ghost btn-sm" style="padding:6px 12px" onClick="{{ gMesNext }}">›</button>
