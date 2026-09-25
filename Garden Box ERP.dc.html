@@ -441,14 +441,14 @@ html,body{overflow:hidden;height:100%}
 .sidebar,.oda-footer,.burger{display:none}
 .main{grid-column:1}
 .m-only{display:flex}
-.topbar{height:auto;min-height:48px;padding:calc(env(safe-area-inset-top) + 4px) 14px 6px;gap:10px;background:var(--brand-surface);border-bottom:1px solid rgba(197,134,39,.35);backdrop-filter:none}
+.topbar{height:auto;min-height:48px;padding:calc(env(safe-area-inset-top) + 26px) 14px 10px;gap:10px;background:var(--brand-surface);border-bottom:1px solid rgba(197,134,39,.35);backdrop-filter:none}
 .topbar h1{color:#fcf9f2;font-family:var(--font-body);font-size:16px;font-weight:600;letter-spacing:.01em;flex:1;text-rendering:optimizeLegibility}
 .m-logo{width:28px;height:28px;border-radius:50%;flex:none;border:1px solid rgba(197,134,39,.55)}
 .m-user{flex:none;width:32px;height:32px;border-radius:50%;background:var(--gold);color:#0a2117;border:none;align-items:center;justify-content:center;font-family:var(--font-body);font-weight:700;font-size:13px;cursor:pointer}
 .m-subs{display:flex;gap:4px;margin:12px 16px 0;padding:4px;background:var(--paper-2);border-radius:999px;flex:none}
 .m-subs button{flex:1;border:none;background:transparent;border-radius:999px;padding:9px 10px;font-family:var(--font-body);font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;white-space:nowrap}
 .m-subs button.on{background:var(--card);color:var(--ink);box-shadow:0 2px 8px rgba(10,33,23,.12)}
-.content{padding:16px 16px 28px;-webkit-overflow-scrolling:touch}
+.content{padding:16px 16px calc(110px + env(safe-area-inset-bottom));-webkit-overflow-scrolling:touch}
 .page-head{margin-bottom:18px;padding-bottom:12px}
 .page-head h2{font-size:24px}
 .page-head p{font-size:13.5px}
@@ -459,6 +459,7 @@ html,body{overflow:hidden;height:100%}
 .kpis,.app .kpis{grid-template-columns:repeat(2,minmax(0,1fr)) !important;gap:10px;margin-bottom:14px}
 .kpi .val{font-size:clamp(16px,5vw,20px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 html,body{background:linear-gradient(var(--brand-surface) 50%,var(--paper) 50%)}
+.app{grid-template-rows:minmax(0,1fr) !important}
 .app{background:var(--paper)}
 .m-mes{flex-wrap:nowrap !important;gap:8px !important;margin-bottom:14px !important}
 .m-mes>span{min-width:0 !important;flex:1;font-size:15px !important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -476,11 +477,10 @@ html,body{background:linear-gradient(var(--brand-surface) 50%,var(--paper) 50%)}
 .btn{min-height:44px;justify-content:center}
 .btn-sm{min-height:38px}
 .row-between{gap:10px}
-.m-nav{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));grid-row:2;grid-column:1;position:relative;z-index:90;background:rgba(252,249,242,.96);backdrop-filter:blur(14px);border-top:1px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom))}
-.m-tab{position:relative;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 0 4px;border:none;background:none;cursor:pointer;color:var(--muted-2);font-family:var(--font-body);font-size:10.5px;font-weight:600;letter-spacing:.02em;min-height:52px}
-.m-tab svg{width:23px;height:23px}
-.m-tab.active{color:var(--accent)}
-.m-tab.active:before{content:"";position:absolute;top:-7px;left:30%;right:30%;height:2px;border-radius:2px;background:var(--gold)}
+.m-nav{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));position:fixed;left:14px;right:14px;bottom:calc(env(safe-area-inset-bottom) + 12px);z-index:1000;padding:6px;border-radius:32px;background:rgba(252,249,242,.58);-webkit-backdrop-filter:blur(22px) saturate(180%);backdrop-filter:blur(22px) saturate(180%);border:1px solid rgba(255,255,255,.7);box-shadow:0 12px 32px -10px rgba(10,33,23,.35),inset 0 1px 0 rgba(255,255,255,.8);touch-action:manipulation}
+.m-tab{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:6px 0;border:none;background:none;border-radius:26px;cursor:pointer;color:var(--muted);font-family:var(--font-body);font-size:10px;font-weight:600;letter-spacing:.02em;min-height:54px;transition:background .18s,color .18s;touch-action:manipulation}
+.m-tab svg{width:22px;height:22px}
+.m-tab.active{color:var(--accent);background:rgba(15,54,36,.1)}
 .m-tab .n{position:absolute;top:2px;left:calc(50% + 6px);background:var(--gold);color:#0a2117;font-size:9.5px;font-weight:700;border-radius:999px;padding:0 5px;line-height:15px}
 .table-wrap:has(.tcard){background:transparent;border:none;box-shadow:none;overflow:visible}
 table.tcard{min-width:0;display:block}
