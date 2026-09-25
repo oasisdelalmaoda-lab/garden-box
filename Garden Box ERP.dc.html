@@ -436,18 +436,19 @@ td .strong{font-weight:600;color:var(--ink)}
 /* ═══ Versión móvil: app con barra inferior ═══ */
 @media(max-width:700px){
 html,body{overscroll-behavior:none;-webkit-tap-highlight-color:transparent}
-.app,.app.plegada{grid-template-columns:minmax(0,1fr);height:100dvh}
+html,body{overflow:hidden;height:100%}
+.app,.app.plegada{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) auto;height:100dvh}
 .sidebar,.oda-footer,.burger{display:none}
 .main{grid-column:1}
 .m-only{display:flex}
-.topbar{height:auto;min-height:56px;padding:calc(env(safe-area-inset-top) + 8px) 16px 8px;gap:12px;background:var(--brand-surface);border-bottom:1px solid rgba(197,134,39,.35);backdrop-filter:none}
-.topbar h1{color:#fcf9f2;font-size:19px;flex:1}
-.m-logo{width:32px;height:32px;border-radius:50%;flex:none;border:1px solid rgba(197,134,39,.55)}
-.m-user{flex:none;width:36px;height:36px;border-radius:50%;background:var(--gold);color:#0a2117;border:none;align-items:center;justify-content:center;font-family:var(--font-body);font-weight:700;font-size:13px;cursor:pointer}
+.topbar{height:auto;min-height:48px;padding:calc(env(safe-area-inset-top) + 4px) 14px 6px;gap:10px;background:var(--brand-surface);border-bottom:1px solid rgba(197,134,39,.35);backdrop-filter:none}
+.topbar h1{color:#fcf9f2;font-size:17px;flex:1}
+.m-logo{width:28px;height:28px;border-radius:50%;flex:none;border:1px solid rgba(197,134,39,.55)}
+.m-user{flex:none;width:32px;height:32px;border-radius:50%;background:var(--gold);color:#0a2117;border:none;align-items:center;justify-content:center;font-family:var(--font-body);font-weight:700;font-size:13px;cursor:pointer}
 .m-subs{display:flex;gap:4px;margin:12px 16px 0;padding:4px;background:var(--paper-2);border-radius:999px;flex:none}
 .m-subs button{flex:1;border:none;background:transparent;border-radius:999px;padding:9px 10px;font-family:var(--font-body);font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;white-space:nowrap}
 .m-subs button.on{background:var(--card);color:var(--ink);box-shadow:0 2px 8px rgba(10,33,23,.12)}
-.content{padding:16px 16px calc(92px + env(safe-area-inset-bottom));-webkit-overflow-scrolling:touch}
+.content{padding:16px 16px 28px;-webkit-overflow-scrolling:touch}
 .page-head{margin-bottom:18px;padding-bottom:12px}
 .page-head h2{font-size:24px}
 .page-head p{font-size:13.5px}
@@ -475,7 +476,7 @@ body{background:var(--brand-surface)}
 .btn{min-height:44px;justify-content:center}
 .btn-sm{min-height:38px}
 .row-between{gap:10px}
-.m-nav{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));position:fixed;left:0;right:0;bottom:0;z-index:90;background:rgba(252,249,242,.96);backdrop-filter:blur(14px);border-top:1px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom))}
+.m-nav{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));grid-row:2;grid-column:1;position:relative;z-index:90;background:rgba(252,249,242,.96);backdrop-filter:blur(14px);border-top:1px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom))}
 .m-tab{position:relative;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 0 4px;border:none;background:none;cursor:pointer;color:var(--muted-2);font-family:var(--font-body);font-size:10.5px;font-weight:600;letter-spacing:.02em;min-height:52px}
 .m-tab svg{width:23px;height:23px}
 .m-tab.active{color:var(--accent)}
@@ -2241,8 +2242,6 @@ Numeración     https://webservice.facturatech.co/v2/BETA/SincronizacionNumeraci
       ODA&nbsp;<b>LABS</b>
     </span>
   </footer>
-  </div>
-
 <nav class="m-nav" style="display:{{ dMNav }}">
   <button class="m-tab {{ navTablero }}" onClick="{{ goTablero }}">
     <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1.5"></rect><rect x="14" y="3" width="7" height="5" rx="1.5"></rect><rect x="14" y="12" width="7" height="9" rx="1.5"></rect><rect x="3" y="16" width="7" height="5" rx="1.5"></rect></svg>
@@ -2265,6 +2264,9 @@ Numeración     https://webservice.facturatech.co/v2/BETA/SincronizacionNumeraci
     <span>Finanzas</span>
   </button>
 </nav>
+  </div>
+
+
 
 
 <div class="login" style="display:{{ dLogin }}">
