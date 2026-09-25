@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <script src="./support.js"></script>
 </head>
 <body>
@@ -12,6 +12,10 @@
 <link rel="icon" type="image/png" sizes="192x192" href="assets/favicon-192.png">
 <link rel="apple-touch-icon" href="assets/favicon-180.png">
 <meta name="theme-color" content="#0f3624">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Garden Box">
 <link rel="stylesheet" href="_ds/oda-labs-design-system-4e73bcfe-ba24-49fa-be1b-fce3a4fed636/tokens/colors.css">
 <link rel="stylesheet" href="_ds/oda-labs-design-system-4e73bcfe-ba24-49fa-be1b-fce3a4fed636/tokens/spacing.css">
 <link rel="stylesheet" href="_ds/oda-labs-design-system-4e73bcfe-ba24-49fa-be1b-fce3a4fed636/tokens/shape.css">
@@ -428,7 +432,93 @@ td .strong{font-weight:600;color:var(--ink)}
 .oda-footer{height:74px;display:flex;align-items:center;justify-content:center;gap:8px;padding:12px 24px;border-top:1px solid var(--line);background:var(--paper);font-family:var(--font-mono);font-size:12px;color:var(--muted-2)}
 .oda-footer .oda-mark{display:inline-flex;align-items:center;gap:6px;color:var(--ink)}
 .oda-footer .oda-mark b{letter-spacing:3px;color:var(--accent);font-weight:600;font-size:10px}
-@media(max-width:700px){.app{grid-template-columns:0 1fr}.app.plegada{grid-template-columns:248px 1fr}}
+.m-only,.m-nav,.m-subs{display:none}
+/* ═══ Versión móvil: app con barra inferior ═══ */
+@media(max-width:700px){
+html,body{overscroll-behavior:none;-webkit-tap-highlight-color:transparent}
+.app,.app.plegada{grid-template-columns:minmax(0,1fr);height:100dvh}
+.sidebar,.oda-footer,.burger{display:none}
+.main{grid-column:1}
+.m-only{display:flex}
+.topbar{height:auto;min-height:56px;padding:calc(env(safe-area-inset-top) + 8px) 16px 8px;gap:12px;background:var(--brand-surface);border-bottom:1px solid rgba(197,134,39,.35);backdrop-filter:none}
+.topbar h1{color:#fcf9f2;font-size:19px;flex:1}
+.m-logo{width:32px;height:32px;border-radius:50%;flex:none;border:1px solid rgba(197,134,39,.55)}
+.m-user{flex:none;width:36px;height:36px;border-radius:50%;background:var(--gold);color:#0a2117;border:none;align-items:center;justify-content:center;font-family:var(--font-body);font-weight:700;font-size:13px;cursor:pointer}
+.m-subs{display:flex;gap:4px;margin:12px 16px 0;padding:4px;background:var(--paper-2);border-radius:999px;flex:none}
+.m-subs button{flex:1;border:none;background:transparent;border-radius:999px;padding:9px 10px;font-family:var(--font-body);font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;white-space:nowrap}
+.m-subs button.on{background:var(--card);color:var(--ink);box-shadow:0 2px 8px rgba(10,33,23,.12)}
+.content{padding:16px 16px calc(92px + env(safe-area-inset-bottom));-webkit-overflow-scrolling:touch}
+.page-head{margin-bottom:18px;padding-bottom:12px}
+.page-head h2{font-size:24px}
+.page-head p{font-size:13.5px}
+.kpi{padding:14px;border-radius:14px}
+.kpi .val{font-size:20px;margin-top:6px}
+.kpi .lab{font-size:9.5px;letter-spacing:.14em}
+.kpi .delta{font-size:11.5px}
+.kpis{gap:10px;margin-bottom:14px}
+.card-pad{padding:16px}
+.filters{flex-wrap:nowrap;overflow-x:auto;margin:0 -16px 14px;padding:0 16px 2px;scrollbar-width:none}
+.filters::-webkit-scrollbar{display:none}
+.fchip{flex:none;padding:9px 14px}
+.page .row-between{flex-wrap:wrap !important}
+.page .row-between>*{min-width:0;max-width:100%}
+.page .row-between .filters{flex:1 1 100% !important;margin:0 !important;padding:0 0 2px}
+.page .row-between>div{flex-wrap:wrap !important;flex:1 1 100%}
+.page .row-between .crm-buscar{flex:1 1 100%}
+.btn{min-height:44px;justify-content:center}
+.btn-sm{min-height:38px}
+.row-between{gap:10px}
+.m-nav{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));position:fixed;left:0;right:0;bottom:0;z-index:90;background:rgba(252,249,242,.96);backdrop-filter:blur(14px);border-top:1px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom))}
+.m-tab{position:relative;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 0 4px;border:none;background:none;cursor:pointer;color:var(--muted-2);font-family:var(--font-body);font-size:10.5px;font-weight:600;letter-spacing:.02em;min-height:52px}
+.m-tab svg{width:23px;height:23px}
+.m-tab.active{color:var(--accent)}
+.m-tab.active:before{content:"";position:absolute;top:-7px;left:30%;right:30%;height:2px;border-radius:2px;background:var(--gold)}
+.m-tab .n{position:absolute;top:2px;left:calc(50% + 6px);background:var(--gold);color:#0a2117;font-size:9.5px;font-weight:700;border-radius:999px;padding:0 5px;line-height:15px}
+.table-wrap:has(.tcard){background:transparent;border:none;box-shadow:none;overflow:visible}
+table.tcard{min-width:0;display:block}
+.tcard thead{display:none}
+.tcard tbody{display:flex;flex-direction:column;gap:10px}
+.tcard tbody tr{display:grid;gap:6px 10px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;box-shadow:var(--shadow)}
+.tcard tbody tr:hover{background:var(--card)}
+.tcard tbody td{display:block;padding:0;border:none;min-width:0;font-size:13.5px}
+.tcard .hide-m{display:none}
+.t-tab tr{grid-template-columns:minmax(0,1fr) auto}
+.t-tab td:nth-child(1){grid-column:1}.t-tab td:nth-child(3){grid-column:2;grid-row:1;font-weight:600;color:var(--ink)}
+.t-tab td:nth-child(2){grid-column:1;font-size:12.5px}.t-tab td:nth-child(4){grid-column:2;grid-row:2;justify-self:end}
+.t-ven tr{grid-template-columns:auto auto minmax(0,1fr) auto}
+.t-ven td:nth-child(3){grid-column:1/4;grid-row:1;font-size:15px}
+.t-ven td:nth-child(8){grid-column:4;grid-row:1;font-weight:700;color:var(--ink);font-size:15px}
+.t-ven td:nth-child(2){grid-column:1;grid-row:2;font-size:12px}
+.t-ven td:nth-child(1){grid-column:2;grid-row:2;font-size:12px}
+.t-ven td:nth-child(4){grid-column:3/5;grid-row:2;font-size:12.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.t-ven td:nth-child(10){grid-column:1/3;grid-row:3;margin-top:4px}
+.t-ven td:nth-child(11){grid-column:3/5;grid-row:3;justify-self:end;margin-top:4px;display:flex;gap:6px}
+.t-sus tr{grid-template-columns:auto auto minmax(0,1fr)}
+.t-sus td:nth-child(1){grid-column:1/3;grid-row:1;font-size:15px}
+.t-sus td:nth-child(7){grid-column:3;grid-row:1;justify-self:end}
+.t-sus td:nth-child(5){grid-column:1;grid-row:2;font-size:12.5px}
+.t-sus td:nth-child(6){grid-column:2/4;grid-row:2;font-size:12.5px}
+.t-sus td:nth-child(3){grid-column:1/-1;grid-row:3;padding:10px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin:4px 0}
+.t-sus td:nth-child(8){grid-column:1/-1;grid-row:4}
+.t-sus td:nth-child(8)>div{justify-content:flex-start}
+.t-crm tr{grid-template-columns:auto minmax(0,1fr) auto}
+.t-crm td:nth-child(2){grid-column:1/3;grid-row:1;font-size:15px}
+.t-crm td:nth-child(8){grid-column:3;grid-row:1;font-weight:700;color:var(--ink)}
+.t-crm td:nth-child(4){grid-column:1/3;grid-row:2;font-size:12.5px}
+.t-crm td:nth-child(7){grid-column:3;grid-row:2;font-size:12px;justify-self:end}
+.t-crm td:nth-child(5){grid-column:1;grid-row:3;margin-top:4px}
+.t-crm td:nth-child(3){grid-column:2;grid-row:3;margin-top:4px}
+.t-crm td:nth-child(9){grid-column:3;grid-row:3;margin-top:4px;display:flex;align-items:center}
+.overlay{align-items:flex-end;padding:0}
+.modal,.modal.wide{max-width:none !important;margin:0;border-radius:22px 22px 0 0;max-height:92dvh;animation:mSheet .22s ease-out}
+.modal-head{position:relative;padding-top:24px}
+.modal-head:before{content:"";position:absolute;top:9px;left:50%;width:38px;height:4px;margin-left:-19px;border-radius:4px;background:var(--line)}
+.modal-foot{padding:12px 16px calc(12px + env(safe-area-inset-bottom))}
+.modal-foot .btn{flex:1}
+.field input,.field select,.field textarea{font-size:16px}
+.toast{bottom:calc(84px + env(safe-area-inset-bottom));max-width:calc(100% - 32px)}
+}
+@keyframes mSheet{from{transform:translateY(40px);opacity:.4}to{transform:none;opacity:1}}
 </style>
 </helmet>
 <div class="app {{ appCls }}">
@@ -528,8 +618,20 @@ td .strong{font-weight:600;color:var(--ink)}
       <button class="burger" aria-label="Menú" onClick="{{ plegarBarra }}">
         <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"></path></svg>
       </button>
+      <img class="m-logo m-only" src="assets/garden-box-monograma.png" alt="">
       <h1>{{ pageTitle }}</h1>
+      <button class="m-user m-only" title="{{ sesionAccion }}" onClick="{{ salir }}">{{ userIni }}</button>
     </div>
+    <sc-if value="{{ subEnt }}" hint-placeholder-val="{{ false }}">
+      <div class="m-subs">
+        <sc-for list="{{ eTabs }}" as="t" hint-placeholder-count="2"><button class="{{ t.on }}" onClick="{{ t.pick }}">{{ t.label }}</button></sc-for>
+      </div>
+    </sc-if>
+    <sc-if value="{{ subFin }}" hint-placeholder-val="{{ false }}">
+      <div class="m-subs">
+        <sc-for list="{{ fTabs }}" as="t" hint-placeholder-count="2"><button class="{{ t.on }}" onClick="{{ t.pick }}">{{ t.label }}</button></sc-for>
+      </div>
+    </sc-if>
 
     <div class="content">
       <section class="page" style="display:{{ dTablero }}">
@@ -574,7 +676,7 @@ td .strong{font-weight:600;color:var(--ink)}
               
             </div>
             <div class="table-wrap">
-              <table>
+              <table class="tcard t-tab">
                 <thead><tr><th>Cliente</th><th>Producto</th><th>Valor</th><th>Estado</th></tr></thead>
                 <tbody>
                   <sc-for list="{{ ultimas }}" as="v" hint-placeholder-count="4">
@@ -782,7 +884,7 @@ td .strong{font-weight:600;color:var(--ink)}
             <span style="font-family:var(--font-mono);font-size:11.5px;color:var(--muted-2)">{{ rangoResumen }}</span>
           </div>
           <div class="table-wrap">
-            <table>
+            <table class="tcard t-ven">
               <thead><tr><th>Fecha</th><th>Pedido</th><th>Cliente</th><th>Producto</th><th>Unid.</th><th>Canal</th><th>Medio de pago</th><th>Valor</th><th>Margen</th><th>Estado</th><th></th></tr></thead>
               <tbody>
                 <sc-for list="{{ ventasFiltradas }}" as="v" hint-placeholder-count="8">
@@ -791,11 +893,11 @@ td .strong{font-weight:600;color:var(--ink)}
                     <td class="mono note" style="white-space:nowrap">{{ v.pedido }}</td>
                     <td><span class="strong">{{ v.cliente }}</span></td>
                     <td title="{{ v.nota }}">{{ v.producto }}</td>
-                    <td class="mono">{{ v.unidadesTxt }}</td>
-                    <td><span class="pill {{ v.tcTono }}">{{ v.tipoCli }}</span></td>
-                    <td>{{ v.medio }}</td>
+                    <td class="mono hide-m">{{ v.unidadesTxt }}</td>
+                    <td class="hide-m"><span class="pill {{ v.tcTono }}">{{ v.tipoCli }}</span></td>
+                    <td class="hide-m">{{ v.medio }}</td>
                     <td class="mono">{{ v.valor }}</td>
-                    <td class="mono {{ v.margenCls }}" style="font-weight:600">{{ v.margen }}</td>
+                    <td class="mono hide-m {{ v.margenCls }}" style="font-weight:600">{{ v.margen }}</td>
                     <td>
                       <button class="est-btn {{ v.tono }}" onClick="{{ v.abrirEstado }}">{{ v.estado }}
                         <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"></path></svg>
@@ -1123,7 +1225,21 @@ td .strong{font-weight:600;color:var(--ink)}
             <div class="card card-pad" style="margin-bottom:16px">
               <div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap">
                 <h3 style="font-size:20px">{{ d.dia }} {{ d.fecha }}</h3>
-                <span class="note">{{ d.resumen }}</span>
+                <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+                  <span class="note">{{ d.resumen }}</span>
+                  <sc-if value="{{ d.hayPend }}" hint-placeholder-val="{{ false }}">
+                    <sc-if value="{{ d.sinPreguntar }}" hint-placeholder-val="{{ true }}">
+                      <button class="btn btn-ghost btn-sm" onClick="{{ d.pedirTodo }}">{{ d.todoTxt }}</button>
+                    </sc-if>
+                    <sc-if value="{{ d.preguntando }}" hint-placeholder-val="{{ false }}">
+                      <span style="display:inline-flex;align-items:center;gap:10px;flex-wrap:wrap">
+                        <span class="note" style="color:var(--ink);font-weight:600">{{ d.todoPregunta }}</span>
+                        <button class="btn btn-primary btn-sm" onClick="{{ d.hacerTodo }}">Sí, entregadas</button>
+                        <button class="linkish" onClick="{{ d.cancelarTodo }}">No</button>
+                      </span>
+                    </sc-if>
+                  </sc-if>
+                </div>
               </div>
               <sc-if value="{{ d.vacio }}" hint-placeholder-val="{{ true }}">
                 <div class="empty">Sin entregas para este día.</div>
@@ -1176,13 +1292,13 @@ td .strong{font-weight:600;color:var(--ink)}
             <div class="card card-pad"><div class="empty">Todavía no hay entregas fijas.<br>Creá la primera y la semana se genera sola.</div></div>
           </sc-if>
           <div class="table-wrap">
-            <table>
+            <table class="tcard t-sus">
               <thead><tr><th>Cliente</th><th>Canal</th><th>Producto</th><th>Unid.</th><th>Días</th><th>Zona</th><th>Estado</th><th></th></tr></thead>
               <tbody>
                 <sc-for list="{{ susFilas }}" as="x" hint-placeholder-count="3">
                   <tr>
                     <td><span class="strong">{{ x.nombre }}</span></td>
-                    <td>{{ x.canal }}</td>
+                    <td class="hide-m">{{ x.canal }}</td>
                     <td>
                       <div style="display:flex;flex-direction:column;gap:6px">
                         <sc-for list="{{ x.lineas }}" as="l" hint-placeholder-count="1">
@@ -1193,7 +1309,7 @@ td .strong{font-weight:600;color:var(--ink)}
                         </sc-for>
                       </div>
                     </td>
-                    <td class="mono">{{ x.unidades }}</td>
+                    <td class="mono hide-m">{{ x.unidades }}</td>
                     <td>{{ x.dias }}</td>
                     <td>{{ x.zona }}</td>
                     <td><span class="pill {{ x.tono }}">{{ x.estado }}</span></td>
@@ -1266,12 +1382,12 @@ td .strong{font-weight:600;color:var(--ink)}
           </div>
         </sc-if>
         <div class="table-wrap">
-          <table>
+          <table class="tcard t-crm">
             <thead><tr><th style="width:34px"><span class="chk-mini {{ cTodosCls }}" onClick="{{ cMarcarTodos }}"><svg width="11" height="11" fill="none" stroke="#fff" stroke-width="3.2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"></path></svg></span></th><th>Cliente</th><th>Canal</th><th>Zona · antigüedad</th><th>Etapa</th><th>Último producto</th><th>Último pedido</th><th>Total</th><th>Ficha</th></tr></thead>
             <tbody>
               <sc-for list="{{ clientesFiltrados }}" as="c" hint-placeholder-count="8">
                 <tr>
-                  <td><span class="chk-mini {{ c.marcado }}" onClick="{{ c.marcar }}"><svg width="11" height="11" fill="none" stroke="#fff" stroke-width="3.2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"></path></svg></span></td>
+                  <td class="hide-m"><span class="chk-mini {{ c.marcado }}" onClick="{{ c.marcar }}"><svg width="11" height="11" fill="none" stroke="#fff" stroke-width="3.2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"></path></svg></span></td>
                   <td><button class="cli-link" onClick="{{ c.abrir }}">{{ c.nombre }}</button></td>
                   <td><span class="pill {{ c.tcTono }}">{{ c.tipoCli }}</span></td>
                     <td>{{ c.bebe }}</td>
@@ -1280,7 +1396,7 @@ td .strong{font-weight:600;color:var(--ink)}
                       <sc-for list="{{ c.etapaOps }}" as="e" hint-placeholder-count="3"><option value="{{ e.v }}">{{ e.l }}</option></sc-for>
                     </select>
                   </td>
-                  <td>{{ c.producto }}</td>
+                  <td class="hide-m">{{ c.producto }}</td>
                   <td class="mono">{{ c.contacto }}</td>
                   <td class="mono">{{ c.total }}</td>
                   <td style="white-space:nowrap">
@@ -2120,6 +2236,29 @@ Numeración     https://webservice.facturatech.co/v2/BETA/SincronizacionNumeraci
   </footer>
   </div>
 
+<nav class="m-nav" style="display:{{ dMNav }}">
+  <button class="m-tab {{ navTablero }}" onClick="{{ goTablero }}">
+    <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1.5"></rect><rect x="14" y="3" width="7" height="5" rx="1.5"></rect><rect x="14" y="12" width="7" height="9" rx="1.5"></rect><rect x="3" y="16" width="7" height="5" rx="1.5"></rect></svg>
+    <span>Tablero</span>
+  </button>
+  <button class="m-tab {{ navVentas }}" onClick="{{ goVentas }}">
+    <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M6 2l1 4h10l1-4M4 6h16l-1.5 13a2 2 0 01-2 2h-9a2 2 0 01-2-2L4 6z"></path></svg>
+    <span>Ventas</span>
+  </button>
+  <button class="m-tab {{ navEnt }}" onClick="{{ goEnt }}">
+    <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 7h11v9H3z"></path><path d="M14 10h4l3 3v3h-7z"></path><circle cx="7" cy="18" r="1.8"></circle><circle cx="17.5" cy="18" r="1.8"></circle></svg>
+    <span>Entregas</span>
+  </button>
+  <button class="m-tab {{ navCrm }}" onClick="{{ goCrm }}">
+    <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M16 19v-1.5a3.5 3.5 0 00-3.5-3.5h-5A3.5 3.5 0 004 17.5V19"></path><circle cx="10" cy="8" r="3.5"></circle><path d="M17 11.2A3.2 3.2 0 0017 5"></path><path d="M20 19v-1.2a3.2 3.2 0 00-2.3-3"></path></svg>
+    <span>Clientes</span>
+  </button>
+  <button class="m-tab {{ navFin }}" onClick="{{ goFin }}">
+    <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 3v18h18"></path><path d="M7 15l4-4 3 3 5-6"></path></svg>
+    <span>Finanzas</span>
+  </button>
+</nav>
+
 
 <div class="login" style="display:{{ dLogin }}">
   <div class="login-marca">
@@ -2270,27 +2409,31 @@ Numeración     https://webservice.facturatech.co/v2/BETA/SincronizacionNumeraci
       <div class="fi-grid">
         <div>
           <div class="fi-sec">
-            <h4>Registrar un acercamiento</h4>
-            <div class="form-grid">
-              <div class="field"><label>Fecha</label><input type="date" value="{{ nnFecha }}" onChange="{{ setNnFecha }}"></div>
-              <div class="field"><label>Tipo</label>
-                <button type="button" class="sel-btn" onClick="{{ abrirSelNnTipo }}"><span>{{ nnTipo }}</span><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"></path></svg></button>
+            <h4>Su pedido habitual</h4>
+            <sc-if value="{{ fiSinCompras }}" hint-placeholder-val="{{ false }}">
+              <div class="empty">Todavía no ha pedido. El hábito sale solo con sus primeras compras.</div>
+            </sc-if>
+            <sc-if value="{{ fiHayCompras }}" hint-placeholder-val="{{ true }}">
+              <div class="dl">
+                <dt>Pide</dt><dd>{{ fiHabPide }}</dd>
+                <dt>Día</dt><dd>{{ fiHabDia }}</dd>
+                <dt>Cada cuánto</dt><dd>{{ fiHabFrec }}</dd>
+                <dt>Suscripción</dt><dd>{{ fiHabSus }}</dd>
+                <dt>Paga con</dt><dd>{{ fiHabMedio }}</dd>
+                <dt>Total pagado</dt><dd>{{ fiTotal }}</dd>
               </div>
-            </div>
-            <div class="field"><label>Asunto</label><input placeholder="Reunión de seguimiento, llamada de dudas…" value="{{ nnAsunto }}" onChange="{{ setNnAsunto }}"></div>
-            <div class="field"><label>Qué se habló</label><textarea placeholder="Qué pidió, qué se acordó, qué observó de la caja." value="{{ nnDetalle }}" onChange="{{ setNnDetalle }}"></textarea></div>
-            <div class="form-grid">
-              <div class="field"><label>Próximo paso</label><input placeholder="Confirmar la entrega del viernes" value="{{ nnProximo }}" onChange="{{ setNnProximo }}"></div>
-              <div class="field"><label>Cuándo</label><input type="date" value="{{ nnProxFecha }}" onChange="{{ setNnProxFecha }}"></div>
-            </div>
-            <button class="btn btn-primary btn-sm" onClick="{{ guardarNota }}">Guardar en la historia</button>
+            </sc-if>
           </div>
           <div class="fi-sec">
-            <h4>{{ fiHistTitulo }}</h4>
-            <sc-if value="{{ fiSinNotas }}" hint-placeholder-val="{{ false }}">
-              <div class="empty">Todavía no hay historia de este cliente.<br>El primer registro se hace en el formulario de arriba.</div>
-            </sc-if>
-            <div class="hist">
+            <h4>Novedades</h4>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+              <sc-for list="{{ fiNovTipos }}" as="t" hint-placeholder-count="3">
+                <button type="button" class="fchip {{ t.on }}" onClick="{{ t.elegir }}">{{ t.nombre }}</button>
+              </sc-for>
+            </div>
+            <div class="field"><textarea placeholder="{{ fiNovPh }}" value="{{ nnDetalle }}" onChange="{{ setNnDetalle }}"></textarea></div>
+            <button class="btn btn-ghost btn-sm" onClick="{{ guardarNota }}">Anotar</button>
+            <div class="hist" style="margin-top:14px">
               <sc-for list="{{ fiNotas }}" as="n" hint-placeholder-count="2">
                 <div class="hist-it">
                   <div class="top">
@@ -2299,14 +2442,25 @@ Numeración     https://webservice.facturatech.co/v2/BETA/SincronizacionNumeraci
                     <span style="flex:1"></span>
                     <button class="linkish" onClick="{{ n.borrar }}">Borrar</button>
                   </div>
-                  <div class="asu">{{ n.asunto }}</div>
-                  <div class="det">{{ n.detalle }}</div>
-                  <sc-if value="{{ n.hayProx }}" hint-placeholder-val="{{ false }}">
-                    <div class="prox">Próximo paso: {{ n.proximo }}</div>
-                  </sc-if>
+                  <div class="det">{{ n.texto }}</div>
                 </div>
               </sc-for>
             </div>
+          </div>
+          <div class="fi-sec">
+            <h4>{{ fiComprasTitulo }}</h4>
+            <sc-for list="{{ fiCompras }}" as="v" hint-placeholder-count="3">
+              <div class="fi-compra">
+                <div>
+                  <div style="font-weight:600"><span class="mono" style="color:var(--muted);font-weight:500;margin-right:8px">{{ v.pedido }}</span>{{ v.producto }}</div>
+                  <div class="note">{{ v.medio }} · {{ v.estado }}</div>
+                </div>
+                <div style="text-align:right;white-space:nowrap">
+                  <div class="mono" style="font-weight:600">{{ v.valor }}</div>
+                  <div class="note mono">{{ v.fecha }}</div>
+                </div>
+              </div>
+            </sc-for>
           </div>
         </div>
         <div>
@@ -2321,7 +2475,7 @@ Numeración     https://webservice.facturatech.co/v2/BETA/SincronizacionNumeraci
             <div class="field"><label>Cómo llegar y a quién entregar</label><textarea placeholder="Portería, torre, apartamento, con quién se deja, horario que sirve, si hay que llamar antes." value="{{ fdDirDetalle }}" onChange="{{ setFdDirDetalle }}"></textarea></div>
             <div class="form-grid">
               <div class="field"><label>Zona de entrega</label><button type="button" class="sel-btn" onClick="{{ abrirSelFdZona }}"><span>{{ fdZonaTxt }}</span><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"></path></svg></button></div>
-              <div class="field"><label>Cliente desde</label><input type="date" value="{{ fdNac }}" onChange="{{ setFdNac }}"></div>
+              <div class="field"><label>Cliente desde</label><input value="{{ fiDesde }}" readOnly="{{ true }}" style="background:var(--paper);color:var(--muted);cursor:default" title="Fecha de su primer pedido"></div>
             </div>
             <div class="form-grid">
               <div class="field"><label>Canal de precio</label><button type="button" class="sel-btn" onClick="{{ abrirSelFdTipo }}"><span>{{ fdTipoCli }}</span><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"></path></svg></button></div>
@@ -2332,36 +2486,23 @@ Numeración     https://webservice.facturatech.co/v2/BETA/SincronizacionNumeraci
               <div class="field"><label>Número</label><input placeholder="Para la factura electrónica" value="{{ fdDocNum }}" onChange="{{ setFdDocNum }}"></div>
             </div>
             <div class="field"><label>Notas fijas</label><textarea placeholder="Lo que siempre hay que tener presente: preferencia de variedad, cada cuánto pide, quién paga." value="{{ fdNotas }}" onChange="{{ setFdNotas }}"></textarea></div>
-            <button class="btn btn-ghost btn-sm" onClick="{{ guardarDatosFicha }}">Guardar datos</button>
-          </div>
-          <div class="fi-sec">
-            <h4>Compras</h4>
-            <div class="dl">
-              <dt>Total</dt><dd>{{ fiTotal }}</dd>
-              <dt>Compras</dt><dd>{{ fiNumCompras }}</dd>
-              <dt>Última</dt><dd>{{ fiUltima }}</dd>
-            </div>
-            <sc-if value="{{ fiSinCompras }}" hint-placeholder-val="{{ false }}">
-              <div class="empty">Sin compras registradas.</div>
-            </sc-if>
-            <sc-for list="{{ fiCompras }}" as="v" hint-placeholder-count="3">
-              <div class="fi-compra">
-                <div>
-                  <div style="font-weight:600">{{ v.producto }}</div>
-                  <div class="note">{{ v.medio }}</div>
-                </div>
-                <div style="text-align:right;white-space:nowrap">
-                  <div class="mono" style="font-weight:600">{{ v.valor }}</div>
-                  <div class="note mono">{{ v.fecha }}</div>
-                </div>
-              </div>
-            </sc-for>
           </div>
         </div>
       </div>
     </div>
-    <div class="modal-foot">
-      <button class="btn btn-ghost" onClick="{{ cerrarFicha }}">Cerrar</button>
+    <div class="modal-foot" style="justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+      <div>
+        <sc-if value="{{ fiSalir }}" hint-placeholder-val="{{ false }}">
+          <span style="display:inline-flex;align-items:center;gap:12px;flex-wrap:wrap">
+            <span class="note" style="color:var(--ink);font-weight:600">Tenés cambios sin guardar.</span>
+            <button class="linkish" style="color:var(--danger)" onClick="{{ cerrarSinGuardar }}">Cerrar sin guardar</button>
+          </span>
+        </sc-if>
+      </div>
+      <div style="display:flex;gap:10px">
+        <button class="btn btn-ghost" onClick="{{ cerrarFicha }}">Cerrar</button>
+        <button class="btn btn-primary" onClick="{{ fiGuardarAccion }}">{{ fiGuardarTxt }}</button>
+      </div>
     </div>
   </div>
 </div>
@@ -2595,7 +2736,6 @@ Numeración     https://webservice.facturatech.co/v2/BETA/SincronizacionNumeraci
       <div class="field"><label>Cómo llegar y a quién entregar</label><textarea placeholder="Portería, torre, apartamento, con quién se deja, horario que sirve, si hay que llamar antes." value="{{ nlDirDetalle }}" onChange="{{ setNlDirDetalle }}"></textarea></div>
       <div class="form-grid">
         <div class="field"><label>Zona de entrega</label><button type="button" class="sel-btn" onClick="{{ abrirSelNlZona }}"><span>{{ nlZonaTxt }}</span><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"></path></svg></button></div>
-        <div class="field"><label>Cliente desde</label><input type="date" value="{{ nlNac }}" onChange="{{ setNlNac }}"></div>
       </div>
       <div class="form-grid">
         <div class="field"><label>Por dónde llegó</label><button type="button" class="sel-btn" onClick="{{ abrirSelNlCanal }}"><span>{{ nlCanal }}</span><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"></path></svg></button></div>
@@ -2627,8 +2767,10 @@ const TONO={'Abierto':'warn','En curso':'accent','Resuelto':'ok'};
 const NIVEL={ok:['ok','Todo en orden'],warn:['warn','Con observaciones'],danger:['danger','Necesita revisión']};
 const BIT_TIPOS=['Reunión','Por revisar','Acuerdo','Trabajo'];
 const N_TIPOS=['Llamada','Reunión','WhatsApp','Correo','Nota'];
-const N_TONO={'Llamada':'accent','Reunión':'ok','WhatsApp':'ok','Correo':'neutral','Nota':'warn'};
-const NN_VACIA={tipo:'Llamada',asunto:'',detalle:'',proximo:'',proxFecha:''};
+const N_TONO={'Llamada':'accent','Reunión':'ok','WhatsApp':'ok','Correo':'neutral','Nota':'warn','Preferencia':'ok','Aviso':'accent','Reclamo':'warn'};
+const NN_VACIA={tipo:'Preferencia',asunto:'',detalle:'',proximo:'',proxFecha:''};
+const NOV_TIPOS=['Preferencia','Aviso','Reclamo'];
+const NOV_PH={'Preferencia':'Solo Cherry Uva, dejar en portería con Don Jorge…','Aviso':'De viaje hasta el 10 de octubre…','Reclamo':'Llegó una bandeja golpeada el martes…'};
 const BIT_TONO={'Reunión':'accent','Por revisar':'warn','Acuerdo':'ok','Trabajo':'neutral'};
 const BIT_TABS=[['tiempo','Reuniones y tiempo'],['crono','Cronograma'],['pend','Pendientes y cuestionario']];
 // Reuniones y tiempo es la medición interna de ODA Labs: la ve quien
@@ -3817,7 +3959,7 @@ class Component extends DCLogic {
 
   /** Confirmar un borrador: nace la venta pendiente y la entrega queda
    *  programada. Si la venta falla, la entrega no se mueve. */
-  confirmarEntrega=async(g)=>{
+  confirmarEntrega=async(g,silencio)=>{
     const partes=g.partes||[{nombre:g.producto_nombre,un:g.unidades}];
     const mixto=partes.length>1;
     const etiqueta=mixto?partes.map(p=>p.un+' × '+p.nombre).join(' · '):partes[0].nombre;
@@ -3833,14 +3975,39 @@ class Component extends DCLogic {
       entrega_fecha:g.fecha,entrega_zona:g.zona||null,
       unidades:unid,costo_unit:costoU,
       tipo_cliente:g.tipo_cliente}).select('id');
-    if(error){ this.flash('No pude crear la venta: '+error.message); return; }
+    if(error){ this.flash('No pude crear la venta: '+error.message); return false; }
     const vid=data&&data[0]&&data[0].id;
     for(const id of (g.ids||[g.id])){
       const {error:e2}=await this.sb.from('entregas')
         .update({estado:'Programada',venta_id:vid}).eq('id',id).select('id');
-      if(e2){ this.flash('La venta quedó creada pero no pude programar la entrega: '+e2.message); return; }
+      if(e2){ this.flash('La venta quedó creada pero no pude programar la entrega: '+e2.message); return false; }
     }
+    if(silencio) return true;
     this.flash('Entrega programada · venta pendiente creada');
+    this.cargarEntregas(); this.cargarNube();
+    return true;
+  };
+
+  /** Cierra el día de una vez: los borradores se confirman (nace su venta)
+   *  y todo lo pendiente pasa a Entregada. Si algo falla se detiene y avisa. */
+  entregarTodas=async(grupos)=>{
+    this.setState({eTodo:null,eTodoCorre:true});
+    let ok=0;
+    try{
+      for(const g of grupos){
+        if(g.estado==='Borrador'){ const r=await this.confirmarEntrega(g,true); if(!r) break; }
+        let fallo=false;
+        for(const id of g.ids){
+          const {data,error}=await this.sb.from('entregas')
+            .update({estado:'Entregada',entregada_en:new Date().toISOString()}).eq('id',id).select('id');
+          if(error||!data||!data.length){ fallo=true; this.flash('Quedaron '+ok+' entregadas. No pude marcar '+g.cliente_nombre+': '+((error&&error.message)||'sin permiso')); break; }
+        }
+        if(fallo) break;
+        ok++;
+      }
+      if(ok===grupos.length) this.flash(ok+(ok===1?' entrega marcada entregada':' entregas marcadas entregadas'));
+    }catch(e){ if(window.odaEstado) window.odaEstado({modulo:'entregas',causa:'entregar todas: '+(e.message||e)}); }
+    this.setState({eTodoCorre:false});
     this.cargarEntregas(); this.cargarNube();
   };
 
@@ -4604,10 +4771,17 @@ class Component extends DCLogic {
         bebe:c.bebeNombre||'',nac:c.bebeNac||'',notas:c.notas||'',
         direccion:c.direccion||'',dirDetalle:c.dirDetalle||'',
         docTipo:c.docTipo||'CC',docNum:c.docNum||'',
-        tipoCli:c.tipoCli||'Detallista',etapa:MARCAS_ETAPA.includes(c.etapa)?c.etapa:'Automática'}});
+        tipoCli:c.tipoCli||'Detallista',etapa:MARCAS_ETAPA.includes(c.etapa)?c.etapa:'Automática'},
+      fiSalir:false});
+    this.setState(st=>({fdOrig:JSON.stringify(st.fd)}));
     if(this.enNube()&&this.state.crmNube&&!this.state.notasL[id]) this.cargarNotas(id);
   };
-  cerrarFicha=()=>this.setState({ficha:null});
+  fichaSucia(){ const s=this.state; return !!s.ficha&&s.fdOrig!=null&&JSON.stringify(s.fd)!==s.fdOrig; }
+  // Si hay cambios sin guardar no se cierra de una: se pregunta.
+  cerrarFicha=()=>{ if(this.fichaSucia()){ this.setState({fiSalir:true}); return; }
+    this.setState({ficha:null,fiSalir:false}); };
+  cerrarSinGuardar=()=>this.setState({ficha:null,fiSalir:false});
+  guardarYCerrar=async()=>{ await this.guardarDatosFicha(); if(!this.fichaSucia()) this.setState({ficha:null,fiSalir:false}); };
 
   async cargarNotas(id){
     const {data,error}=await this.sb.from('cliente_notas').select('*')
@@ -4621,9 +4795,9 @@ class Component extends DCLogic {
   guardarNota=async()=>{
     const id=this.state.ficha, n=this.state.nn;
     if(!id) return;
-    if(!n.asunto.trim()&&!n.detalle.trim()){ this.flash('Escribe al menos el asunto'); return; }
+    if(!n.detalle.trim()){ this.flash('Escribí la novedad'); return; }
     const local={id:'n'+Date.now(),fecha:n.fecha||this.diaHoy(),tipo:n.tipo,
-      asunto:n.asunto.trim()||n.tipo,detalle:n.detalle.trim(),
+      asunto:n.detalle.trim().slice(0,80),detalle:n.detalle.trim(),
       proximo:n.proximo.trim(),proxFecha:n.proxFecha||''};
     const prev=this.state.notasL[id]||[];
     this.setState(st=>({notasL:{...st.notasL,[id]:[local,...prev]},
@@ -4640,7 +4814,7 @@ class Component extends DCLogic {
     }
     this.setState(st=>({notasL:{...st.notasL,[id]:(st.notasL[id]||[])
       .map(x=>x.id===local.id?{...x,id:data[0].id}:x)}}));
-    this.flash('Registro guardado');
+    this.flash('Novedad anotada');
   };
 
   borrarNota=async nid=>{
@@ -4696,6 +4870,7 @@ class Component extends DCLogic {
         await this.sb.from('entregas').update({cliente_nombre:nombre}).eq('cliente_id',id).select('id');
       }
     }catch(e){ if(window.odaEstado) window.odaEstado({modulo:'clientes',causa:'propagar nombre: '+(e.message||e)}); }
+    this.setState(st=>({fdOrig:JSON.stringify(st.fd),fiSalir:false}));
     this.flash('Datos del cliente guardados');
   };
   guardarGasto=async()=>{
@@ -5493,6 +5668,7 @@ class Component extends DCLogic {
         return {...c,estado:'Conectado · sin ventas aún',tono:'ok'};
       }), fasesFt:FASES_FT,
       dLogin:(s.sesion||s.demo)?'none':'flex',
+      dMNav:(s.sesion||s.demo)?'':'none',
       loginSub:'Entra con el correo y la contraseña que te dimos. Las ventas, los clientes y las facturas viven en la base del sistema.',
       loginErr:s.auth.err,
       loginBtn:s.auth.cargando?'Entrando…':'Entrar',
@@ -5700,6 +5876,17 @@ class Component extends DCLogic {
             resumen:grupos.length?grupos.length+(grupos.length===1?' entrega · ':' entregas · ')+un+' paquetes · '+pesos(val)
               :'Sin entregas programadas',
             vacio:!grupos.length,
+            ...(()=>{ const pend=grupos.filter(g=>['Borrador','Programada','En ruta'].includes(g.estado));
+              const bor=pend.filter(g=>g.estado==='Borrador').length;
+              const diaTxt=dia==='martes'?'martes':'viernes';
+              return {hayPend:pend.length>0&&!s.eTodoCorre,
+                sinPreguntar:s.eTodo!==fecha, preguntando:s.eTodo===fecha,
+                todoTxt:'Marcar todas entregadas ('+pend.length+')',
+                todoPregunta:'¿Las '+pend.length+' entregas del '+diaTxt+' quedaron entregadas?'
+                  +(bor?' '+bor+(bor===1?' está en borrador y se confirma':' están en borrador y se confirman')+' con su venta.':''),
+                pedirTodo:()=>this.setState({eTodo:fecha}),
+                cancelarTodo:()=>this.setState({eTodo:null}),
+                hacerTodo:()=>this.entregarTodas(pend)}; })(),
             filas:grupos.map(e=>({
               cliente:e.cliente_nombre, zona:e.zona||'—',
               producto:e.partes.length>1
@@ -5951,7 +6138,7 @@ class Component extends DCLogic {
       fiSinNotas:!fNotas.length,
       fiHistTitulo:'Historia'+(fNotas.length?' · '+fNotas.length+(fNotas.length===1?' registro':' registros'):''),
       fiNotas:fNotas.map(n=>({tipo:n.tipo,tono:N_TONO[n.tipo]||'neutral',
-        fecha:this.fechaCortaIso(n.fecha),asunto:n.asunto,detalle:n.detalle,
+        fecha:this.fechaCortaIso(n.fecha),asunto:n.asunto,detalle:n.detalle,texto:n.detalle||n.asunto,
         proximo:n.proximo+(n.proxFecha?' · '+this.fechaCortaIso(n.proxFecha):''),
         dProx:n.proximo?'block':'none',hayProx:!!n.proximo,borrar:()=>this.borrarNota(n.id)})),
       fdNombre:s.fd.nombre, fdCelular:s.fd.celular, fdCorreo:s.fd.correo, fdBebe:s.fd.bebe,
@@ -5975,9 +6162,39 @@ class Component extends DCLogic {
       fiTotal:'$'+fSuma.toLocaleString('es-CO',{maximumFractionDigits:0}),
       fiNumCompras:String(fVen.length),
       fiUltima:fVen.length?fVen[0].fecha:'Sin compras',
+      fiDesde:(()=>{ const f=fVen.map(v=>v.fechaIso).filter(Boolean).sort()[0];
+        return f?new Date(f+'T12:00:00').toLocaleDateString('es-CO',{day:'numeric',month:'short',year:'numeric'}):'Sin pedidos todavía'; })(),
+      fiSalir:!!s.fiSalir,
+      fiGuardarTxt:s.fiSalir?'Guardar y cerrar':'Guardar',
+      fiGuardarAccion:s.fiSalir?this.guardarYCerrar:this.guardarDatosFicha,
+      cerrarSinGuardar:this.cerrarSinGuardar,
       fiSinCompras:!fVen.length,
-      fiCompras:fVen.slice(0,12).map(v=>({producto:v.producto,medio:v.medio,
-        valor:v.valor,fecha:v.fecha})),
+      fiCompras:fVen.slice(0,12).map(v=>({producto:v.producto,medio:v.medio,estado:v.estado||'—',
+        pedido:v.pedido||'',valor:v.valor,fecha:v.fecha})),
+      fiHayCompras:fVen.length>0,
+      fiComprasTitulo:'Pedidos'+(fVen.length?' · '+fVen.length:''),
+      ...(()=>{
+        if(!fic||!fVen.length) return {fiHabPide:'—',fiHabDia:'—',fiHabFrec:'—',fiHabSus:'—',fiHabMedio:'—'};
+        const por={}; fVen.forEach(v=>this.desglosePedido(v,0).forEach(p=>{ por[p.nombre]=(por[p.nombre]||0)+p.un; }));
+        const n=fVen.length;
+        const pide=Object.entries(por).sort((x,y)=>y[1]-x[1])
+          .map(([k,u])=>{ const pr=Math.round(u/n*10)/10; return String(pr).replace('.',',')+' × '+k.replace(/ 500 g$/,''); }).join(' · ')||'—';
+        const dias={}; fVen.forEach(v=>{ const f=v.entregaFecha||v.fechaIso; if(!f) return;
+          const d=new Date(f+'T12:00:00').getDay(); const nm=d===2?'Martes':d===5?'Viernes':null; if(nm) dias[nm]=(dias[nm]||0)+1; });
+        const dia=Object.entries(dias).sort((x,y)=>y[1]-x[1]).map(x=>x[0]).join(' y ')||'—';
+        const fs=[...new Set(fVen.map(v=>v.fechaIso).filter(Boolean))].sort();
+        let frec='Una sola compra';
+        if(fs.length>1){ const span=(new Date(fs[fs.length-1])-new Date(fs[0]))/864e5; const d=Math.round(span/(fs.length-1));
+          frec=d<=4?'Dos veces por semana':d<=9?'Cada semana':d<=17?'Cada dos semanas':'Cada '+d+' días'; }
+        const sus=(s.susL||[]).filter(x=>x.cliente_id===fic.id&&x.activa);
+        const med={}; fVen.forEach(v=>{ if(v.medio&&v.medio!=='—') med[v.medio]=(med[v.medio]||0)+1; });
+        return {fiHabPide:pide+' por pedido',fiHabDia:dia,fiHabFrec:frec,
+          fiHabSus:sus.length?'Activa · '+sus.map(x=>x.unidades+' × '+String(x.producto_nombre||'').replace(/ 500 g$/,'')).join(' · '):'No tiene',
+          fiHabMedio:Object.entries(med).sort((x,y)=>y[1]-x[1]).map(x=>x[0])[0]||'—'};
+      })(),
+      fiNovTipos:NOV_TIPOS.map(t=>({nombre:t,on:(s.nn&&s.nn.tipo)===t?'on':'',
+        elegir:()=>this.setState(st=>({nn:{...st.nn,tipo:t}}))})),
+      fiNovPh:NOV_PH[(s.nn&&s.nn.tipo)]||NOV_PH.Preferencia,
       qCrm:s.qCrm||'', hayQCrm:!!(s.qCrm||'').trim(),
       setQCrm:e=>{ const v=e.target.value; this.setState({qCrm:v,cTope:60}); },
       limpiarQCrm:()=>this.setState({qCrm:'',cTope:60}),
