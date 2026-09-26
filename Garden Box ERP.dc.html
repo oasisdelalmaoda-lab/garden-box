@@ -440,7 +440,11 @@ html,body{height:auto;min-height:100%;overflow:visible;overflow-x:clip;backgroun
 .app,.app.plegada{display:block;height:auto;min-height:100vh}
 .main{display:block;overflow:visible}
 .content{overflow:visible !important}
-.sidebar,.oda-footer,.burger{display:none}
+.sidebar,.burger{display:none}
+.oda-footer{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:999;height:auto;margin:0;padding:6px 0 max(6px,calc(env(safe-area-inset-bottom) - 16px));font-size:10px;gap:6px;border:none;background:var(--paper)}
+.oda-footer .oda-mark b{font-size:9px}
+.m-tab:active{background:rgba(15,54,36,.16)}
+.m-home button:active,.m-back:active,.m-subs button:active{opacity:.7}
 .main{grid-column:1}
 .m-only{display:flex}
 .topbar{position:sticky;top:0;z-index:80;height:auto;min-height:48px;padding:calc(env(safe-area-inset-top) + 26px) 14px 10px;gap:10px;background:var(--brand-surface) !important;-webkit-backdrop-filter:none !important;border-bottom:1px solid rgba(197,134,39,.35);backdrop-filter:none}
@@ -454,7 +458,7 @@ html,body{height:auto;min-height:100%;overflow:visible;overflow-x:clip;backgroun
 .m-subs{display:flex;gap:4px;margin:12px 16px 0;padding:4px;background:var(--paper-2);border-radius:999px;flex:none}
 .m-subs button{flex:1;border:none;background:transparent;border-radius:999px;padding:9px 10px;font-family:var(--font-body);font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;white-space:nowrap}
 .m-subs button.on{background:var(--card);color:var(--ink);box-shadow:0 2px 8px rgba(10,33,23,.12)}
-.content{padding:16px 16px calc(96px + env(safe-area-inset-bottom));-webkit-overflow-scrolling:touch}
+.content{padding:16px 16px calc(130px + env(safe-area-inset-bottom));-webkit-overflow-scrolling:touch}
 .page-head{margin-bottom:18px;padding-bottom:12px}
 .page-head h2{font-size:24px}
 .page-head p{font-size:13.5px}
@@ -482,7 +486,7 @@ html,body{height:auto;min-height:100%;overflow:visible;overflow-x:clip;backgroun
 .btn{min-height:44px;justify-content:center}
 .btn-sm{min-height:38px}
 .row-between{gap:10px}
-.m-nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));position:fixed;left:14px;right:14px;bottom:max(8px,calc(env(safe-area-inset-bottom) - 14px));z-index:1000;padding:6px;border-radius:32px;background:rgba(252,249,242,.58);-webkit-backdrop-filter:blur(22px) saturate(180%);backdrop-filter:blur(22px) saturate(180%);border:1px solid rgba(255,255,255,.7);box-shadow:0 12px 32px -10px rgba(10,33,23,.35),inset 0 1px 0 rgba(255,255,255,.8);touch-action:manipulation}
+.m-nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));position:fixed;left:14px;right:14px;bottom:max(30px,calc(env(safe-area-inset-bottom) + 6px));z-index:1000;padding:6px;border-radius:32px;background:rgba(252,249,242,.58);-webkit-backdrop-filter:blur(22px) saturate(180%);backdrop-filter:blur(22px) saturate(180%);border:1px solid rgba(255,255,255,.7);box-shadow:0 12px 32px -10px rgba(10,33,23,.35),inset 0 1px 0 rgba(255,255,255,.8);touch-action:manipulation}
 .m-tab{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:6px 0;border:none;background:none;border-radius:26px;cursor:pointer;color:var(--muted);font-family:var(--font-body);font-size:10px;font-weight:600;letter-spacing:.02em;min-height:54px;transition:background .18s,color .18s;touch-action:manipulation}
 .m-tab svg{width:22px;height:22px}
 .m-tab.active{color:var(--accent);background:rgba(15,54,36,.1)}
@@ -639,6 +643,7 @@ table.tcard{min-width:0;display:block}
         <img class="m-logo m-only" src="assets/garden-box-monograma.png" alt="">
       </sc-if>
       <h1>{{ pageTitle }}</h1>
+      <button class="m-back m-only" aria-label="Refrescar" style="margin-left:0" onClick="{{ mRefrescar }}"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M20 11a8 8 0 10-2.3 5.7"></path><path d="M20 4v7h-7"></path></svg></button>
       <button class="m-user m-only" title="{{ sesionAccion }}" onClick="{{ salir }}">{{ userIni }}</button>
     </div>
     <sc-if value="{{ subEnt }}" hint-placeholder-val="{{ false }}">
@@ -3257,6 +3262,15 @@ const FD_VACIO={nombre:'',celular:'',correo:'',bebe:'',nac:'',notas:'',
   direccion:'',dirDetalle:'',docTipo:'CC',docNum:'',tipoCli:'Detallista',etapa:'Automática'};
 
 class Component extends DCLogic {
+  _vistaMovil(){
+    const s=this.state, k=(s.page||'')+'|'+(s.botTab||'')+'|'+(s.eTab||'')+'|'+(s.fTab||'');
+    if(this._ultVista!==undefined&&this._ultVista!==k&&window.innerWidth<=700){
+      const top=()=>{ window.scrollTo(0,0); document.documentElement.scrollTop=0; document.body.scrollTop=0; };
+      top(); requestAnimationFrame(top);
+    }
+    this._ultVista=k;
+  }
+  componentDidUpdate(){ this._vistaMovil(); }
   state={page:'tablero',sede:0,fVenta:'Todas',fEtapa:'Todas',fDian:'Todas',fMedio:'Todos',fEstado:'Todos',fProd:'Todos',fTipoCli:'Todos',fCrmTipo:'Todos',qCrm:'',vEst:null,fMenu:null,modal:false,toast:'',chatSel:0,msgNuevo:'',extra:{},
     nv:{cliente:'',clienteId:null,producto:CATALOGO[0].nombre,tipoCli:'Detallista',cant:{},zona:'',direccion:'',dirDetalle:'',unidades:'',valor:'',medio:'Transferencia Bold',estado:'Pendiente',
       docTipo:'CC',docNum:'',correo:'',celular:''},ventas:VENTAS,
@@ -5111,7 +5125,7 @@ class Component extends DCLogic {
     const sinSesion=!this.enNube();
     const sinTabla=!sinSesion&&this._agNube===false;
     return {
-      botTabs:BOT_TABS.map(([v,l])=>({label:l,on:tab===v?'on':'',pick:()=>this.setState({page:'bot',botTab:v})})),
+      botTabs:BOT_TABS.map(([v,l])=>({label:l,on:tab===v?'on':'',pick:()=>{ this.setState({page:'bot',botTab:v}); if(window.innerWidth<=700) window.scrollTo(0,0); }})),
       dbBandeja:'none',
       dbAgente:'none',
       dbInforme:'none',
@@ -5723,7 +5737,7 @@ class Component extends DCLogic {
       navFin:p==='fin'?'active':'', navSop:p==='sop'?'active':'', navBit:p==='bit'?'active':'',
       goBit:()=>this.setState({page:'bit'}), dBit:d('bit'),
       fTabs:[['resumen','Resumen'],['gastos','Gastos']]
-        .map(([v,l])=>({label:l,on:(s.fTab||'resumen')===v?'on':'',pick:()=>this.setState({page:'fin',fTab:v})})),
+        .map(([v,l])=>({label:l,on:(s.fTab||'resumen')===v?'on':'',pick:()=>{ this.setState({page:'fin',fTab:v}); if(window.innerWidth<=700) window.scrollTo(0,0); }})),
       subFin:p==='fin', subBot:p==='bot', subBit:p==='bit',
       dfRes:(s.fTab||'resumen')==='resumen'?'block':'none', dfGas:s.fTab==='gastos'?'block':'none',
       recargarEventos:this.cargarEventos,
@@ -5787,6 +5801,7 @@ class Component extends DCLogic {
       }), fasesFt:FASES_FT,
       dLogin:(s.sesion||s.demo)?'none':'flex',
       dMNav:(s.sesion||s.demo)?'':'none',
+      mRefrescar:()=>window.location.reload(),
       mBack:s.page==='crm'||s.page==='fin', mNoBack:!(s.page==='crm'||s.page==='fin'),
       loginSub:'Entra con el correo y la contraseña que te dimos. Las ventas, los clientes y las facturas viven en la base del sistema.',
       loginErr:s.auth.err,
@@ -5930,7 +5945,7 @@ class Component extends DCLogic {
         : 'Modo demo: el tiempo se guarda solo en este navegador. Al entrar con tu cuenta pasa a la base y queda compartido.',
       bitMods:modArr.map(([n,ms])=>({nombre:n,horas:this.horas(ms)+' h',w:Math.max(3,Math.round(ms/maxMs*100))+'%'})),
       navBot:p==='bot'?'active':'', navFe:p==='fe'?'active':'',
-      goBot:()=>this.setState({page:'bot'}), goFe:()=>this.setState({page:'fe'}),
+      goBot:()=>{ this.setState({page:'bot'}); if(window.innerWidth<=700) window.scrollTo(0,0); }, goFe:()=>this.setState({page:'fe'}),
       dBot:d('bot'), dFe:d('fe'),
       chats:CHATS.map((c,i)=>({...c,ini:c.familia.split(' ').map(w=>w[0]).join('').slice(0,2),
         ultimo:(s.extra[i]&&s.extra[i].length?s.extra[i][s.extra[i].length-1].texto:c.mensajes[c.mensajes.length-1].texto),
@@ -5949,12 +5964,12 @@ class Component extends DCLogic {
       ...this.botVals(usd),
       estadosFe:['Todas','Aceptada','En validación','Rechazada'].map(l=>({label:l,on:s.fDian===l?'on':'',pick:()=>this.setState({fDian:l})})),
       facturasFiltradas:(s.fDian==='Todas'?FACTURAS:FACTURAS.filter(f=>f.dian===s.fDian)).map(f=>({...f,tono:FE_TONO[f.dian]||'neutral'})),
-      goTablero:()=>this.setState({page:'tablero'}), goVentas:()=>this.setState({page:'ventas'}),
+      goTablero:()=>{ this.setState({page:'tablero'}); if(window.innerWidth<=700) window.scrollTo(0,0); }, goVentas:()=>{ this.setState({page:'ventas'}); if(window.innerWidth<=700) window.scrollTo(0,0); },
       goProd:()=>this.setState({page:'prod'}), dProd:d('prod'), navProd:p==='prod'?'active':'',
       navEnt:p==='ent'?'active':'', dEnt:d('ent'), subEnt:p==='ent',
-      goEnt:()=>{ this.setState({page:'ent'}); this.cargarEntregas(); },
+      goEnt:()=>{ this.setState({page:'ent'}); this.cargarEntregas(); if(window.innerWidth<=700) window.scrollTo(0,0); },
       eTabs:[['ruta','Ruta de la semana'],['sus','Suscripciones']].map(([v,l])=>({label:l,
-        on:(s.eTab||'ruta')===v?'on':'', pick:()=>{ this.setState({page:'ent',eTab:v}); this.cargarEntregas(); }})),
+        on:(s.eTab||'ruta')===v?'on':'', pick:()=>{ this.setState({page:'ent',eTab:v}); this.cargarEntregas(); if(window.innerWidth<=700) window.scrollTo(0,0); }})),
       dERuta:(s.eTab||'ruta')==='ruta'?'block':'none',
       dESus:s.eTab==='sus'?'block':'none',
       eSemanaTxt:(()=>{ const l=this.semanaActual();
@@ -6221,7 +6236,7 @@ class Component extends DCLogic {
       togglePfActivo:()=>this.setState(st=>({pf:{...st.pf,activo:!st.pf.activo}})),
       cerrarProducto:()=>this.setState({pf:null}),
       guardarProducto:this.guardarProducto,
-      goCrm:()=>this.setState({page:'crm'}), goFin:()=>this.setState({page:'fin'}),
+      goCrm:()=>{ this.setState({page:'crm'}); if(window.innerWidth<=700) window.scrollTo(0,0); }, goFin:()=>{ this.setState({page:'fin'}); if(window.innerWidth<=700) window.scrollTo(0,0); },
       goSop:()=>this.setState({page:'sop'}),
       dTablero:d('tablero'), dVentas:d('ventas'), dCrm:d('crm'), dFin:d('fin'), dSop:d('sop'),
       ventasHoyCount:(()=>{ const hoy=this.fechaCortaIso(this.diaHoy());
