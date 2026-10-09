@@ -111,6 +111,10 @@ a:hover{color:var(--accent-press)}
 .selector .dot{width:8px;height:8px;border-radius:50%;background:var(--ok)}
 .selector svg{color:var(--muted-2)}
 .topbar h1{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ojo-cifras{flex:none;margin-left:auto;width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .12s,color .12s}
+.ojo-cifras:hover{border-color:var(--accent);color:var(--accent)}
+.ojo-cifras.on{background:var(--accent);border-color:var(--accent);color:#fcf9f2}
+.main.privado .kpi .val,.main.privado .kpi .delta,.main.privado .kpi .val~div,.main.privado .cifra{filter:blur(7px);user-select:none;transition:filter .12s}
 .topbar .selector{flex:none;margin-left:auto}
 .content{flex:1;overflow-y:auto;padding:32px 28px 72px;container-type:inline-size;container-name:area}
 .page{max-width:none;margin:0}
@@ -214,6 +218,8 @@ td .strong{font-weight:600;color:var(--ink)}
 .subtab.on{color:var(--accent);border-bottom-color:var(--accent)}
 .three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:20px}
 @container (max-width:660px){.three{grid-template-columns:minmax(0,1fr)}}
+.four{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:20px}
+@container (max-width:860px){.four{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .dz{border:1.5px dashed var(--accent-2);border-radius:var(--radius);background:var(--paper);padding:32px 20px;text-align:center;cursor:pointer;transition:.15s}
 .dz:hover,.dz.hot{background:var(--accent-soft);border-color:var(--accent)}
 .dz .big{font-size:15.5px;font-weight:700;margin-bottom:5px}
@@ -312,7 +318,7 @@ td .strong{font-weight:600;color:var(--ink)}
 .login-marca .pie{position:relative;z-index:1;font-family:var(--font-body);font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#a8bdb0}
 .login-panel{flex:1 1 48%;min-width:0;display:flex;align-items:center;justify-content:center;padding:32px 24px;overflow-y:auto}
 .login-card{width:100%;max-width:390px}
-@media(max-width:860px){.login{flex-direction:column}.login-marca{flex:none;padding:28px 24px}.login-marca .mid{display:none}.login-marca .luna{display:none}}
+@media(max-width:860px){.login{flex-direction:column}.login-marca{flex:none;min-height:calc(env(safe-area-inset-top) + clamp(180px,26vh,230px));padding:calc(env(safe-area-inset-top) + 18px) 24px 22px;flex-direction:column !important;align-items:flex-start !important;justify-content:space-between !important;gap:16px;background-position:center 45%}.login-marca:before{background:rgba(10,33,23,.78)}.login-marca .mid{display:none}.login-marca .luna{display:none}.login-logo{width:84px}.login-marca .pie{font-size:10px;letter-spacing:.16em;line-height:1.6;color:#d7e3d9}}
 .login-card .eyebrow{display:block;margin-bottom:10px}
 .login-card h1{font-family:var(--font-head);font-size:32px;font-weight:700;color:var(--ink);margin-bottom:6px;letter-spacing:0}
 .login-card .sub{font-size:14.5px;color:var(--muted);margin-bottom:26px;line-height:1.6}
@@ -449,6 +455,9 @@ html,body{height:auto;min-height:100%;overflow:visible;overflow-x:clip;backgroun
 .m-only{display:flex}
 .topbar{position:sticky;top:0;z-index:80;height:auto;min-height:48px;padding:calc(env(safe-area-inset-top) + 26px) 14px 10px;gap:10px;background:var(--brand-surface) !important;-webkit-backdrop-filter:none !important;border-bottom:1px solid rgba(197,134,39,.35);backdrop-filter:none}
 .topbar h1{color:#fcf9f2;font-family:var(--font-body);font-size:16px;font-weight:600;letter-spacing:.01em;flex:1;text-rendering:optimizeLegibility}
+.ojo-cifras{width:34px;height:34px;background:none;border-color:rgba(252,249,242,.4);color:#fcf9f2}
+.ojo-cifras:hover{color:#fcf9f2;border-color:#fcf9f2}
+.ojo-cifras.on{background:#fcf9f2;color:var(--brand-surface,#0f3624);border-color:#fcf9f2}
 .m-back{flex:none;width:32px;height:32px;margin-left:-6px;border:none;background:none;color:#fcf9f2;align-items:center;justify-content:center;cursor:pointer}
 .m-home{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:6px 0 14px}
 .m-home button{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;font-family:var(--font-body);font-size:14px;font-weight:600;color:var(--ink);cursor:pointer;text-align:left;box-shadow:var(--shadow)}
@@ -631,7 +640,7 @@ table.tcard{min-width:0;display:block}
     </div>
   </aside>
 
-  <div class="main">
+  <div class="{{ claseMain }}">
     <div class="topbar">
       <button class="burger" aria-label="Menú" onClick="{{ plegarBarra }}">
         <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"></path></svg>
@@ -643,6 +652,10 @@ table.tcard{min-width:0;display:block}
         <img class="m-logo m-only" src="assets/garden-box-monograma.png" alt="">
       </sc-if>
       <h1>{{ pageTitle }}</h1>
+      <button class="{{ ojoCls }}" aria-label="{{ ojoTxt }}" title="{{ ojoTxt }}" onClick="{{ alternarOjo }}">
+        <sc-if value="{{ ojoAbierto }}" hint-placeholder-val="{{ true }}"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg></sc-if>
+        <sc-if value="{{ ojoCerrado }}" hint-placeholder-val="{{ false }}"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M3 3l18 18"></path><path d="M10.6 5.1A10.6 10.6 0 0112 5c6.5 0 10 7 10 7a17 17 0 01-3.2 4.1M6.6 6.6C3.9 8.4 2 12 2 12s3.5 7 10 7c1.9 0 3.5-.6 4.9-1.4"></path><path d="M9.9 9.9a3 3 0 004.2 4.2"></path></svg></sc-if>
+      </button>
       <button class="m-back m-only" aria-label="Refrescar" style="margin-left:0;width:34px;height:34px;border:1px solid rgba(252,249,242,.4);border-radius:50%" onClick="{{ mRefrescar }}"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M20 11a8 8 0 10-2.3 5.7"></path><path d="M20 4v7h-7"></path></svg></button>
       <button class="m-user m-only" title="{{ sesionAccion }}" onClick="{{ salir }}">{{ userIni }}</button>
     </div>
@@ -663,7 +676,7 @@ table.tcard{min-width:0;display:block}
     </sc-if>
 
     <div class="content">
-      <section class="page" style="display:{{ dTablero }}">
+      <sc-if value="{{ pgTablero }}" hint-placeholder-val="{{ false }}"><section class="page" style="display:{{ dTablero }}">
         <div class="m-mes" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px">
           <button class="btn btn-ghost btn-sm" style="padding:6px 12px" onClick="{{ gMesPrev }}">‹</button>
           <span style="font-size:19px;font-weight:700;letter-spacing:-.01em;min-width:190px;text-align:center">{{ gMesTitulo }}</span>
@@ -671,9 +684,9 @@ table.tcard{min-width:0;display:block}
           <button class="btn btn-ghost btn-sm" onClick="{{ irMesActual }}">Mes en curso</button>
         </div>
         <div class="kpis">
-          <div class="kpi"><div class="lab">Ingresos del mes</div><div class="val">{{ finIngresos }}</div><div class="delta {{ finIngresosTono }}">{{ finIngresosDelta }}</div></div>
-          <div class="kpi"><div class="lab">Ventas del mes</div><div class="val">{{ tbVentasMes }}</div><div class="delta">{{ tbTicket }} de ticket promedio</div></div>
-          <div class="kpi"><div class="lab">Clientes en el CRM</div><div class="val">{{ tbFamilias }}</div><div class="delta">{{ tbActivas }}</div></div>
+          <div class="kpi"><div class="lab">Ventas del mes</div><div class="val">{{ tbVendido }}</div><div class="delta {{ tbVendidoTono }}">{{ tbVendidoDelta }}</div><div style="font-size:12px;color:var(--muted);margin-top:4px">{{ tbIngresadoSub }}</div></div>
+          <div class="kpi"><div class="lab">Pedidos pagados</div><div class="val">{{ tbVentasMes }}</div><div class="delta">{{ tbTicket }} de ticket promedio</div></div>
+          <div class="kpi" onClick="{{ verCartera }}" style="cursor:pointer"><div class="lab">Cartera por cobrar</div><div class="val">{{ tbCarteraTotal }}</div><div class="delta">{{ tbCarteraSub }}</div></div>
           <div class="kpi"><div class="lab">Utilidad del mes</div><div class="val">{{ finUtilidad }}</div><div class="delta {{ finUtilidadTono }}">{{ finMargen }} de margen</div></div>
         </div>
         <div class="two">
@@ -794,6 +807,18 @@ table.tcard{min-width:0;display:block}
           </div>
           <div class="card card-pad">
             <div class="eyebrow">Cartera por cobrar</div>
+            <div style="margin-top:10px;display:flex;justify-content:space-between;align-items:baseline;gap:10px">
+              <span style="font-size:13.5px;color:var(--muted)">Total sin cobrar</span>
+              <span style="font-family:var(--font-mono);font-size:20px;font-weight:700;color:var(--ink)">{{ tbCarteraTotal }}</span>
+            </div>
+            <div style="margin-top:10px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px">
+              <sc-for list="{{ tbCarteraTramos }}" as="t" hint-placeholder-count="3">
+                <div style="border:1px solid var(--line);border-radius:10px;padding:8px 10px;display:flex;flex-direction:column;gap:4px">
+                  <span style="font-size:11.5px;color:var(--muted)">{{ t.label }}</span>
+                  <span class="pill {{ t.tono }}" style="align-self:flex-start;font-family:var(--font-mono)">{{ t.valor }}</span>
+                </div>
+              </sc-for>
+            </div>
             <div style="margin-top:14px;display:flex;flex-direction:column;gap:12px">
               <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px">
                 <span style="font-size:13.5px">Pendientes de pago</span>
@@ -812,6 +837,20 @@ table.tcard{min-width:0;display:block}
                 <span style="font-family:var(--font-mono);font-size:13px;color:var(--muted-2)">{{ tbFallidoVal }}</span>
               </div>
             </div>
+            <sc-if value="{{ tbHayDeuda }}" hint-placeholder-val="{{ false }}">
+              <div style="margin-top:14px;border-top:1px solid var(--line);padding-top:8px;display:flex;flex-direction:column">
+                <sc-for list="{{ tbDeudores }}" as="d" hint-placeholder-count="3">
+                  <button type="button" onClick="{{ d.abrir }}" style="all:unset;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)">
+                    <span style="display:flex;flex-direction:column;gap:2px;min-width:0">
+                      <span style="font-size:13.5px;font-weight:600;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ d.cliente }}</span>
+                      <span style="font-size:12px;color:var(--muted)">{{ d.sub }}</span>
+                    </span>
+                    <span style="font-family:var(--font-mono);font-size:13px;color:var(--ink);flex-shrink:0">{{ d.valor }}</span>
+                  </button>
+                </sc-for>
+                <button type="button" class="btn btn-ghost btn-sm" style="margin-top:10px;align-self:flex-start" onClick="{{ verCartera }}">{{ tbMasDeuda }}</button>
+              </div>
+            </sc-if>
             <p class="cal-note">{{ tbCarteraNota }}</p>
           </div>
         </div>
@@ -819,12 +858,13 @@ table.tcard{min-width:0;display:block}
           <button onClick="{{ goCrm }}"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M16 19v-1.5a3.5 3.5 0 00-3.5-3.5h-5A3.5 3.5 0 004 17.5V19"></path><circle cx="10" cy="8" r="3.5"></circle><path d="M17 11.2A3.2 3.2 0 0017 5"></path><path d="M20 19v-1.2a3.2 3.2 0 00-2.3-3"></path></svg>Clientes</button>
           <button onClick="{{ goFin }}"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 3v18h18"></path><path d="M7 15l4-4 3 3 5-6"></path></svg>Finanzas</button>
         </div>
-      </section>
+      </section></sc-if>
 
-      <section class="page" style="display:{{ dVentas }}">
+      <sc-if value="{{ pgVentas }}" hint-placeholder-val="{{ false }}"><section class="page" style="display:{{ dVentas }}">
         <div>
-          <div class="three">
-            <div class="kpi"><div class="lab">Ingresos registrados</div><div class="val">{{ kIngresos }}</div><div class="delta">{{ kIngresosSub }}</div></div>
+          <div class="four">
+            <div class="kpi"><div class="lab">Ventas registradas</div><div class="val">{{ kVendido }}</div><div class="delta">{{ kVendidoSub }}</div></div>
+            <div class="kpi" onClick="{{ verPorCobrar }}" style="cursor:pointer"><div class="lab">Por cobrar</div><div class="val">{{ kCobrar }}</div><div class="delta">{{ kCobrarSub }}</div></div>
             <div class="kpi"><div class="lab">Ventas</div><div class="val">{{ kTotal }}</div><div class="delta">{{ kTotalSub }}</div></div>
             <div class="kpi"><div class="lab">Margen del período</div><div class="val">{{ kMargen }}</div><div class="delta">{{ kMargenSub }}</div></div>
           </div>
@@ -902,12 +942,26 @@ table.tcard{min-width:0;display:block}
               Registrar venta
             </button>
           </div>
+          <div class="crm-buscar" style="margin-top:14px">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4-4"></path></svg>
+            <input placeholder="Buscar pedido, cliente, producto, zona o celular" defaultValue="{{ qVenIni }}" key="{{ qVenKey }}" onInput="{{ setQVen }}">
+            <sc-if value="{{ hayQVen }}" hint-placeholder-val="{{ false }}">
+              <button type="button" class="x" onClick="{{ limpiarQVen }}" title="Limpiar"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"></path></svg></button>
+            </sc-if>
+          </div>
           <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:14px;margin-top:14px">
             <div class="filters" style="margin:0">
               <sc-for list="{{ rangos }}" as="r" hint-placeholder-count="4">
                 <span class="fchip {{ r.on }}" onClick="{{ r.pick }}">{{ r.label }}</span>
               </sc-for>
             </div>
+            <sc-if value="{{ vMesOn }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;align-items:center;gap:4px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:3px 6px">
+                <button type="button" class="btn btn-ghost btn-sm" style="padding:4px 10px;border:none" onClick="{{ vMesPrev }}" title="Mes anterior">‹</button>
+                <span style="font-size:13px;font-weight:600;color:var(--ink);min-width:110px;text-align:center">{{ vMesTitulo }}</span>
+                <button type="button" class="btn btn-ghost btn-sm" style="padding:4px 10px;border:none" onClick="{{ vMesNext }}" title="Mes siguiente">›</button>
+              </div>
+            </sc-if>
             <div style="display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 12px">
               <span style="font-family:var(--font-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-2)">Rango</span>
               <input type="date" value="{{ fDesde }}" onChange="{{ setDesde }}" style="background:transparent;border:none;outline:none;font-family:var(--font-mono);font-size:12px;color:var(--ink)">
@@ -954,9 +1008,9 @@ table.tcard{min-width:0;display:block}
         </div>
 
 
-      </section>
+      </section></sc-if>
 
-      <section class="page" style="display:{{ dBit }}">
+      <sc-if value="{{ pgBit }}" hint-placeholder-val="{{ false }}"><section class="page" style="display:{{ dBit }}">
         <div class="page-head">
           <p>Las reuniones, los puntos por revisar y el tiempo que toma construir el sistema. Todo en un solo lugar para que nadie tenga que preguntar cómo va.</p>
         </div>
@@ -1175,9 +1229,9 @@ table.tcard{min-width:0;display:block}
             </div>
           </div>
         </div>
-      </section>
+      </section></sc-if>
 
-      <section class="page" style="display:{{ dProd }}" data-screen-label="Productos">
+      <sc-if value="{{ pgProd }}" hint-placeholder-val="{{ false }}"><section class="page" style="display:{{ dProd }}" data-screen-label="Productos">
         <div class="page-head">
           <h2>Productos</h2>
           <p>Las presentaciones que se venden, con el costo del invernadero y el precio de cada canal. Lo que se agregue acá aparece de una en el formulario de venta.</p>
@@ -1187,10 +1241,16 @@ table.tcard{min-width:0;display:block}
             <span class="note">{{ prodNota }}</span>
             <span class="fchip {{ pVerInactCls }}" onClick="{{ togglePVerInact }}">{{ pVerInactLabel }}</span>
           </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn btn-ghost" onClick="{{ nuevoCanal }}" style="padding:8px 14px;font-size:13px">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg>
+            Canal
+          </button>
           <button class="btn btn-primary" onClick="{{ nuevoProducto }}">
             <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg>
             Nuevo producto
           </button>
+          </div>
         </div>
         <sc-if value="{{ prodNoNube }}" hint-placeholder-val="{{ false }}">
           <div class="aviso">
@@ -1231,9 +1291,9 @@ table.tcard{min-width:0;display:block}
           </table>
         </div>
         <p class="note" style="margin-top:14px">Marcá varios para activarlos, desactivarlos, ponerles el mismo costo o eliminarlos. Un producto con ventas registradas no se puede eliminar: se desactiva. Los precios de venta de cada canal se guardan dentro del producto y se ven al editarlo. Un producto que se deja de vender se marca como inactivo al editarlo: desaparece de esta lista y del formulario de venta, pero las ventas viejas siguen apuntando a él.</p>
-      </section>
+      </section></sc-if>
 
-      <section class="page" style="display:{{ dEnt }}" data-screen-label="Entregas">
+      <sc-if value="{{ pgEnt }}" hint-placeholder-val="{{ false }}"><section class="page" style="display:{{ dEnt }}" data-screen-label="Entregas">
         <div class="page-head">
           <h2>Entregas</h2>
           <p>Martes y viernes, solo en Cali. La semana se arma con dos cosas: las ventas que registrás con fecha de entrega, que entran ya programadas, y los borradores de los clientes con entrega fija, que se confirman uno por uno y ahí nace la venta pendiente.</p>
@@ -1358,14 +1418,14 @@ table.tcard{min-width:0;display:block}
             </table>
           </div>
         </div>
-      </section>
+      </section></sc-if>
 
-      <section class="page" style="display:{{ dCrm }}">
+      <sc-if value="{{ pgCrm }}" hint-placeholder-val="{{ false }}"><section class="page" style="display:{{ dCrm }}">
         <div class="row-between" style="flex-wrap:nowrap;align-items:center">
           <div style="display:flex;align-items:center;gap:10px;flex-wrap:nowrap;min-width:0">
             <div class="crm-buscar">
               <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4-4"></path></svg>
-              <input placeholder="Buscar cliente, zona, celular o correo" value="{{ qCrm }}" onChange="{{ setQCrm }}">
+              <input placeholder="Buscar cliente, zona, celular o correo" defaultValue="{{ qCrm }}" key="{{ qCrmKey }}" onInput="{{ setQCrm }}">
               <sc-if value="{{ hayQCrm }}" hint-placeholder-val="{{ false }}">
                 <button type="button" class="x" onClick="{{ limpiarQCrm }}" title="Limpiar">
                   <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"></path></svg>
@@ -1447,9 +1507,9 @@ table.tcard{min-width:0;display:block}
             </div>
           </sc-if>
         </div>
-      </section>
+      </section></sc-if>
 
-      <section class="page" style="display:{{ dFin }}">
+      <sc-if value="{{ pgFin }}" hint-placeholder-val="{{ false }}"><section class="page" style="display:{{ dFin }}">
                 <div style="display:{{ dfRes }}">
         <div class="kpis">
           <div class="kpi"><div class="lab">Ingresos de {{ finMes }}</div><div class="val">{{ finIngresos }}</div><div class="delta {{ finIngresosTono }}">{{ finIngresosDelta }}</div></div>
@@ -1617,10 +1677,10 @@ table.tcard{min-width:0;display:block}
           </div>
         </div>
         </div>
-        </section>
+        </section></sc-if>
       
 
-      <section class="page" style="display:{{ dBot }}">
+      <sc-if value="{{ pgBot }}" hint-placeholder-val="{{ false }}"><section class="page" style="display:{{ dBot }}">
         <div class="page-head">
           <p>Mensajes listos para enviar desde el WhatsApp del negocio, según pedidos, pagos y clientes.</p>
         </div>
@@ -2093,9 +2153,9 @@ table.tcard{min-width:0;display:block}
             <p class="note" style="margin-top:14px">{{ ciNota }}</p>
           </div>
         </div>
-      </section>
+      </section></sc-if>
 
-      <section class="page" style="display:{{ dFe }}">
+      <sc-if value="{{ pgFe }}" hint-placeholder-val="{{ false }}"><section class="page" style="display:{{ dFe }}">
         <div class="page-head">
           <p>Cada pago aprobado en Bold genera la factura, la valida ante la DIAN y la envía por WhatsApp. Sin volver a digitar.</p>
         </div>
@@ -2176,7 +2236,7 @@ Numeración     https://webservice.facturatech.co/v2/BETA/SincronizacionNumeraci
             </tbody>
           </table>
         </div>
-      </section>
+      </section></sc-if>
 
       <section class="page" style="display:{{ dSop }}">
         <div class="page-head">
@@ -2222,7 +2282,7 @@ Numeración     https://webservice.facturatech.co/v2/BETA/SincronizacionNumeraci
                   <div class="up-box" style="display:{{ dAdd }}" onClick="{{ pickFile }}">+</div>
                   <span>Máx. 4 fotos</span>
                 </div>
-                <input type="file" accept="image/*" multiple="" hidden="" ref="{{ fileRef }}" onChange="{{ onFiles }}">
+                
               </div>
               <button class="btn btn-primary" style="width:100%;justify-content:center" onClick="{{ enviar }}">{{ sendLabel }}</button>
             </div>
@@ -2389,6 +2449,12 @@ Numeración     https://webservice.facturatech.co/v2/BETA/SincronizacionNumeraci
     <sc-for list="{{ selOpts }}" as="o" hint-placeholder-count="3">
       <button type="button" class="{{ o.on }}" onClick="{{ o.pick }}">{{ o.label }}</button>
     </sc-for>
+    <sc-if value="{{ selEsCanal }}" hint-placeholder-val="{{ false }}">
+      <button type="button" onClick="{{ selNuevoCanal }}" style="display:flex;align-items:center;gap:6px;margin-top:4px;border-top:1px solid var(--line);border-radius:0 0 8px 8px;color:var(--accent);font-weight:600">
+        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg>
+        Nuevo canal
+      </button>
+    </sc-if>
   </div>
 </sc-if>
 
@@ -2774,6 +2840,15 @@ Numeración     https://webservice.facturatech.co/v2/BETA/SincronizacionNumeraci
         <div class="field"><label>Costo del invernadero</label><input placeholder="6100" value="{{ pfCosto }}" onChange="{{ setPfCosto }}"></div>
         <div class="field"><label>Precio distribuidor</label><input placeholder="9500" value="{{ pfDist }}" onChange="{{ setPfDist }}"></div>
         <div class="field"><label>Precio mayorista</label><input placeholder="Sin definir" value="{{ pfMay }}" onChange="{{ setPfMay }}"></div>
+        <sc-for list="{{ pfExtras }}" as="x" hint-placeholder-count="0">
+          <div class="field"><label>{{ x.label }}</label><input placeholder="Sin definir" value="{{ x.valor }}" onChange="{{ x.set }}"></div>
+        </sc-for>
+      </div>
+      <div style="display:flex;margin:-6px 0 12px">
+        <button type="button" class="btn btn-ghost" onClick="{{ pfNuevoCanal }}" style="padding:6px 12px;font-size:12.5px">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg>
+          Nuevo canal
+        </button>
       </div>
       <p class="note" style="margin:-4px 0 14px">{{ pfMargen }}</p>
       <div class="field"><label>SKU</label><input placeholder="Se arma solo con el nombre" value="{{ pfSku }}" onChange="{{ setPfSku }}"></div>
@@ -2818,6 +2893,21 @@ Numeración     https://webservice.facturatech.co/v2/BETA/SincronizacionNumeraci
   </div>
 </div>
 
+<div class="overlay" style="display:{{ dCanalForm }}">
+  <div class="modal" style="max-width:420px">
+    <div class="modal-head"><h3>Nuevo canal</h3></div>
+    <div class="modal-body">
+      <div class="field"><label>Nombre del canal</label><input placeholder="Ej: Restaurante" value="{{ ncNombre }}" onChange="{{ setNcNombre }}" onKeyDown="{{ ncTecla }}"></div>
+      <p class="note">{{ canalesNota }}</p>
+      <p class="note">El canal aparece en ventas, clientes, suscripciones y productos. Mientras un producto no tenga precio para este canal, se cobra el precio detallista.</p>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onClick="{{ cerrarCanal }}">Cancelar</button>
+      <button class="btn btn-primary" onClick="{{ guardarCanal }}">Crear canal</button>
+    </div>
+  </div>
+</div>
+
 <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
   <div class="toast">
     <svg width="16" height="16" fill="none" stroke="#fff" stroke-width="2.4" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg>
@@ -2828,7 +2918,7 @@ Numeración     https://webservice.facturatech.co/v2/BETA/SincronizacionNumeraci
 </div></x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1320,&quot;height&quot;:840}}">
 const SOP={url:'https://jcvhrideueyscgfogdip.supabase.co',key:'sb_publishable_Ycko0bMOdKahQqGVJuDrQg_gHoTTWdk',
-  cliente:'Garden Box',plan:'Esencial',caso:'garden-box'};
+  cliente:'Garden Box',plan:'Esencial',caso:'garden-box',casoId:'5b1d9299-48bf-445b-8aec-3ea081fc6929'};
 const H={apikey:SOP.key,Authorization:'Bearer '+SOP.key};
 const TONO={'Abierto':'warn','En curso':'accent','Resuelto':'ok'};
 const NIVEL={ok:['ok','Todo en orden'],warn:['warn','Con observaciones'],danger:['danger','Necesita revisión']};
@@ -3015,11 +3105,15 @@ const precioDe=(prod,tipo)=>{ const p=PRECIOS[prod]; if(!p) return null;
   return p[tipo]!=null?p[tipo]:p.Detallista; };
 // Con base conectada los precios salen del producto; PRECIOS es el respaldo
 // del catálogo de ejemplo cuando se abre el archivo sin sesión.
+// Precio propio del producto para un canal. Los tres de siempre tienen
+// columna; los canales creados después viven en precios_canal (jsonb).
+const precioCanalDe=(r,tipo)=>tipo==='Distribuidor'?r.precio_distribuidor
+  :tipo==='Mayorista'?r.precio_mayorista:tipo==='Detallista'?r.precio_cop
+  :(r.precios_canal||{})[tipo];
 const precioProd=(r,tipo)=>{
   if(!r) return null;
-  const v=tipo==='Distribuidor'?r.precio_distribuidor
-    :tipo==='Mayorista'?r.precio_mayorista:r.precio_cop;
-  return v!=null?Number(v):(r.precio_cop!=null?Number(r.precio_cop):null); };
+  const v=precioCanalDe(r,tipo);
+  return v!=null&&v!==''?Number(v):(r.precio_cop!=null?Number(r.precio_cop):null); };
 /** Foto de la variedad, del banco del cliente. Lo que no es redondo ni uva
  *  muestra las dos bandejas juntas: no se inventa una imagen por producto. */
 const fotoVariedad=t=>{
@@ -3140,8 +3234,11 @@ class Consulta{
   gte(c,v){ this.par.push(encodeURIComponent(c)+'=gte.'+encodeURIComponent(v)); return this; }
   ilike(c,v){ this.par.push(encodeURIComponent(c)+'=ilike.'+encodeURIComponent(v)); return this; }
   in(c,arr){ this.par.push(encodeURIComponent(c)+'=in.('+arr.map(x=>encodeURIComponent(x)).join(',')+')'); return this; }
-  order(c,o){ this.par.push('order='+encodeURIComponent(c)+'.'+((o&&o.ascending===false)?'desc':'asc')); return this; }
+  order(c,o){ const t=encodeURIComponent(c)+'.'+((o&&o.ascending===false)?'desc':'asc');
+    const i=this.par.findIndex(p=>p.indexOf('order=')===0);
+    if(i>=0) this.par[i]+=','+t; else this.par.push('order='+t); return this; }
   limit(n){ this.par.push('limit='+n); return this; }
+  range(a,b){ this.par.push('offset='+a,'limit='+(b-a+1)); return this; }
   single(){ this.una=true; return this; }
   maybeSingle(){ this.una=true; this.tolerante=true; return this; }
   insert(o){ this.metodo='POST'; this.cuerpo=o; return this; }
@@ -3270,12 +3367,33 @@ class Component extends DCLogic {
     }
     this._ultVista=k;
   }
-  componentDidUpdate(){ this._vistaMovil(); }
+  async _todas(tabla,orden){
+    const pagina=(i,conId)=>{ let q=this.sb.from(tabla).select('*').order(orden,{ascending:false});
+      if(conId) q=q.order('id',{ascending:true});
+      return q.range(i*1000,i*1000+999); };
+    const out=[], vistos=new Set(); let conId=true;
+    for(let i=0;i<20;i++){
+      const pedir=async c=>{ try{ return await pagina(i,c); }catch(e){ return {error:e}; } };
+      let r=await pedir(conId);
+      if(r.error&&conId){ conId=false; r=await pedir(false); }
+      if(r.error){ if(i) break; console.warn('[GB] '+tabla+': '+r.error.message);
+        try{ return await this.sb.from(tabla).select('*').order(orden,{ascending:false}).limit(1000); }catch(e){ return {data:[],error:e}; } }
+      (r.data||[]).forEach(x=>{ const k=x.id!=null?x.id:JSON.stringify(x); if(!vistos.has(k)){ vistos.add(k); out.push(x); } });
+      if(!r.data||r.data.length<1000) break;
+    }
+    return {data:out,error:null};
+  }
+  moverMesVentas(n){
+    const m=this.state.vMes||this.diaHoy().slice(0,7);
+    const d=new Date(+m.slice(0,4),+m.slice(5,7)-1+n,1);
+    this.setState({vMes:d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'),vTope:60});
+  }
+  _sinTilde(x){ return String(x==null?'':x).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,''); }
   state={page:'tablero',sede:0,fVenta:'Todas',fEtapa:'Todas',fDian:'Todas',fMedio:'Todos',fEstado:'Todos',fProd:'Todos',fTipoCli:'Todos',fCrmTipo:'Todos',qCrm:'',vEst:null,fMenu:null,modal:false,toast:'',chatSel:0,msgNuevo:'',extra:{},
     nv:{cliente:'',clienteId:null,producto:CATALOGO[0].nombre,tipoCli:'Detallista',cant:{},zona:'',direccion:'',dirDetalle:'',unidades:'',valor:'',medio:'Transferencia Bold',estado:'Pendiente',
       docTipo:'CC',docNum:'',correo:'',celular:''},ventas:VENTAS,
     vTab:'registro',fFuente:'Todas',corte:'2026-10-01',
-    fRango:'todas',fDesde:'',fHasta:'',
+    fRango:'mes',fDesde:'',fHasta:'',
     impName:'',impCols:null,impRows:null,impMap:{},impErr:'',dzHot:false,
     bit:[],bitRun:null,bitTarea:'',bitMod:'Ventas',bitMin:'',
     bitTipo:'Reunión',bitNota:'',
@@ -3310,13 +3428,13 @@ class Component extends DCLogic {
     this.setState({nube:'cargando'});
     try{
       const [v,p,c,cr,pd,q,cl,ga]=await Promise.all([
-        this.sb.from('ventas').select('*').order('fecha',{ascending:false}).limit(500),
+        this._todas('ventas','fecha'),
         this.sb.from('productos').select('*').order('nombre'),
         this.sb.from('config').select('clave,valor'),
         this.sb.from('cronograma').select('*').order('orden'),
         this.sb.from('pendientes').select('*').order('orden'),
         this.sb.from('respuestas_cliente').select('*').order('orden'),
-        this.sb.from('clientes_crm').select('*').order('actualizado_en',{ascending:false}).limit(500),
+        this._todas('clientes_crm','actualizado_en'),
         this.sb.from('gastos').select('*').order('fecha',{ascending:false}).limit(500),
       ]);
       if(v.error) throw v.error;
@@ -3346,6 +3464,7 @@ class Component extends DCLogic {
       setTimeout(()=>this.registrarCobrosPendientes(),900);
       const cfg={}; (c.data||[]).forEach(r=>{ cfg[r.clave]=r.valor; });
       const prods=p.data||[];
+      this.sumarCanales(cfg.canales_extra,prods);
       this.setState(st=>({
         // El orden se decide acá y no en la consulta: la API acepta un
         // solo criterio, y hacen falta dos —fecha y consecutivo— para que
@@ -3598,9 +3717,52 @@ class Component extends DCLogic {
          gramaje:r.gramaje||'500 g',precio:String(r.precio_cop||''),costo:r.costo_cop!=null?String(r.costo_cop):'',
          dist:r.precio_distribuidor!=null?String(r.precio_distribuidor):'',
          may:r.precio_mayorista!=null?String(r.precio_mayorista):'',
+         extra:Object.fromEntries(Object.entries(r.precios_canal||{}).map(([k,v])=>[k,v!=null?String(v):''])),
          activo:r.activo!==false}
       : {id:null,sku:'',nombre:'',tipo:'Cherry redondo',gramaje:'500 g',
-         precio:'',costo:String(COSTO_UNIT),dist:'',may:'',activo:true}});
+         precio:'',costo:String(COSTO_UNIT),dist:'',may:'',extra:{},activo:true}});
+  };
+
+  /** Suma a la lista de canales los creados en este equipo, los guardados
+   *  en config y los que ya tienen precio en algún producto. */
+  sumarCanales(cfgVal,prods){
+    let extra=[];
+    try{ const v=cfgVal!=null?cfgVal:localStorage.getItem('gb_canales');
+      extra=typeof v==='string'?JSON.parse(v||'[]'):(Array.isArray(v)?v:[]); }catch(e){}
+    (prods||[]).forEach(p=>Object.keys(p.precios_canal||{}).forEach(k=>extra.push(k)));
+    extra.forEach(n=>{ n=String(n||'').trim();
+      if(n&&!TIPOS_CLIENTE.some(t=>t.toLowerCase()===n.toLowerCase())) TIPOS_CLIENTE.push(n); });
+  }
+
+  abrirNuevoCanal=(destino)=>this.setState({nvSel:null,nc:{nombre:'',destino:destino||null}});
+
+  /** Crea un canal de precio. Queda en config para todos los equipos; un
+   *  producto sin precio para ese canal cobra el precio detallista. */
+  crearCanal=async()=>{
+    const nc=this.state.nc; if(!nc) return;
+    const t=(nc.nombre||'').trim().replace(/\s+/g,' ');
+    if(!t){ this.flash('Escribí el nombre del canal'); return; }
+    const nom=t.charAt(0).toUpperCase()+t.slice(1);
+    const ya=TIPOS_CLIENTE.find(x=>x.toLowerCase()===nom.toLowerCase());
+    let aviso=ya?'Ese canal ya existía':'Canal «'+nom+'» creado. Poné su precio en cada producto.';
+    if(!ya){
+      TIPOS_CLIENTE.push(nom);
+      const valor=JSON.stringify(TIPOS_CLIENTE.slice(3));
+      try{ localStorage.setItem('gb_canales',valor); }catch(e){}
+      if(this.enNube()){
+        let {data,error}=await this.sb.from('config').update({valor}).eq('clave','canales_extra').select('clave');
+        if(!error&&!(data||[]).length)
+          ({error}=await this.sb.from('config').insert({clave:'canales_extra',valor}).select('clave'));
+        if(error) aviso='Canal creado solo en este equipo. No pude guardarlo en la base: '+error.message;
+      }
+    }
+    const v=ya||nom, d=nc.destino;
+    this.setState(st=>{ const o={nc:null};
+      if(d==='canal') o.nv=this.recalcVenta({...st.nv,tipoCli:v});
+      else if(d==='fdTipo') o.fd={...st.fd,tipoCli:v};
+      else if(d==='sfCanal'&&st.sf) o.sf={...st.sf,tipoCli:v};
+      return o; });
+    this.flash(aviso);
   };
 
   /** Ids marcados en la tabla de Productos. */
@@ -3645,11 +3807,18 @@ class Component extends DCLogic {
     const fila={sku,nombre,tipo:f.tipo,gramaje:(f.gramaje||'').trim()||null,
       precio_cop:num(f.precio),precio_distribuidor:num(f.dist),precio_mayorista:num(f.may),
       costo_cop:num(f.costo),canal:'WhatsApp',activo:!!f.activo};
+    const extra={}; TIPOS_CLIENTE.slice(3).forEach(k=>{ const n=num((f.extra||{})[k]); if(n) extra[k]=n; });
+    fila.precios_canal=extra;
     let {error}=await this.sb.from('productos').upsert(fila,{onConflict:'sku'}).select('id');
     // Si la base no tiene todavía las dos columnas de precio por canal,
     // el producto se guarda igual con el precio de lista.
+    if(error&&/precios_canal/i.test(error.message||'')){
+      const {precios_canal,...sinExtra}=fila;
+      ({error}=await this.sb.from('productos').upsert(sinExtra,{onConflict:'sku'}).select('id'));
+      if(!error&&Object.keys(extra).length) this.flash('Guardado sin los precios de los canales nuevos: falta correr supabase/canales.sql');
+    }
     if(error&&/precio_distribuidor|precio_mayorista|column/i.test(error.message||'')){
-      const {precio_distribuidor,precio_mayorista,...base}=fila;
+      const {precio_distribuidor,precio_mayorista,precios_canal,...base}=fila;
       ({error}=await this.sb.from('productos').upsert(base,{onConflict:'sku'}).select('id'));
       if(!error) this.flash('Guardado sin los precios de canal: falta correr el añadido en la base');
     }
@@ -3718,10 +3887,10 @@ class Component extends DCLogic {
 
   /** Alto aproximado del menú: 8px de padding + 35px por opción. */
   altoMenu(campo){
-    const n={producto:this.catalogoActual().length,canal:3,doc:5,estado:3,medio:3,
-      pfTipo:3,nlCanal:6,nlEtapa:3,nnTipo:5,gfCat:CATEGORIAS.length,gfMedio:MEDIOS_GASTO.length,
-      fdDoc:5,fdTipo:3,fdEtapa:3,nvZona:4,fdZona:4,sfZona:4,nlZona:4,
-      sfProducto:this.catalogoActual().length,sfCanal:3}[campo]||4;
+    const n={producto:this.catalogoActual().length,doc:5,estado:3,medio:3,
+      canal:TIPOS_CLIENTE.length+1,pfTipo:3,nlCanal:6,nlEtapa:3,nnTipo:5,gfCat:CATEGORIAS.length,gfMedio:MEDIOS_GASTO.length,
+      fdDoc:5,fdTipo:TIPOS_CLIENTE.length+1,fdEtapa:3,nvZona:4,fdZona:4,sfZona:4,nlZona:4,
+      sfProducto:this.catalogoActual().length,sfCanal:TIPOS_CLIENTE.length+1}[campo]||4;
     return 8+n*35;
   }
 
@@ -4299,13 +4468,27 @@ class Component extends DCLogic {
    *  atajo, no un listado. Al elegir una se traen sus datos y la venta
    *  queda ligada a su ficha en vez de crear una familia nueva. */
   sugerenciasCliente(){
-    const q=(this.state.nv.cliente||'').trim().toLowerCase();
+    const nv=this.state.nv, q=this._sinTilde(nv.cliente).trim();
     if(q.length<2) return [];
-    const norm=t=>(t||'').toLowerCase();
-    return this.state.clientesL
-      .filter(c=>c.nombre&&norm(c.nombre).includes(q))
-      .filter(c=>norm(c.nombre)!==q)
-      .slice(0,6)
+    const qd=q.replace(/\D/g,'');
+    const pal=q.split(/\s+/).filter(Boolean);
+    const base=this.state.clientesL||[];
+    const ids=new Set(base.map(c=>c.id));
+    const nombres=new Set(base.map(c=>this._sinTilde(c.nombre).trim()));
+    const deVentas=[];
+    (this.state.ventas||[]).forEach(v=>{
+      const n=this._sinTilde(v.cliente).trim();
+      if(!n||(v.clienteId&&ids.has(v.clienteId))||nombres.has(n)) return;
+      nombres.add(n);
+      deVentas.push({id:v.clienteId||null,nombre:String(v.cliente).trim(),celular:v.celular||'',correo:v.correo||'',
+        bebeNombre:v.entregaZona||v.zona||'',direccion:v.direccion||'',dirDetalle:v.dirDetalle||''});
+    });
+    return [...base,...deVentas]
+      .filter(c=>c.nombre&&(!c.id||c.id!==nv.clienteId))
+      .filter(c=>{ const t=this._sinTilde([c.nombre,c.correo,c.bebeNombre].join(' '));
+        return pal.every(p=>t.includes(p))||(qd.length>=4&&String(c.celular||'').replace(/\D/g,'').includes(qd)); })
+      .sort((a,b)=>(this._sinTilde(a.nombre).startsWith(q)?0:1)-(this._sinTilde(b.nombre).startsWith(q)?0:1))
+      .slice(0,8)
       .map(c=>({
         id:c.id, nombre:c.nombre,
         sub:[c.celular,c.correo].filter(Boolean).join(' · ')||'Sin datos de contacto',
@@ -4365,7 +4548,22 @@ class Component extends DCLogic {
     this.setState({eventosL:data||[],eventosMsg:(data&&data.length)?'':'Todavía no ha llegado ningún aviso.'});
   };
 
+  /** Marca con .cifra todo texto suelto que sea plata, porcentaje, teléfono
+   *  o correo, para que el ojito lo difumine. Solo corre con el ojito cerrado. */
+  marcarCifras(){
+    if(!this.state.privado) return;
+    const raiz=document.querySelector('.main .content'); if(!raiz) return;
+    const re=/\$\s?\d|\d\s?%|\+?\d[\d\s-]{8,}\d|@[\w-]+\./;
+    raiz.querySelectorAll('td,span,div,strong,b,p,small').forEach(el=>{
+      if(el.classList.contains('cifra')) return;
+      for(const n of el.childNodes){ if(n.nodeType===3&&re.test(n.nodeValue)){ el.classList.add('cifra'); break; } }
+    });
+  }
+  componentDidUpdate(){ this._vistaMovil(); if(this.state.privado){ clearTimeout(this._tCif); this._tCif=setTimeout(()=>this.marcarCifras(),30); } }
+
   componentDidMount(){
+    try{ if(localStorage.getItem('gb_privado')==='1') this.setState({privado:true}); }catch(e){}
+    this.sumarCanales(null,[]);
     this.iniciarNube();
     this.cargarEventos();
     this.loadTickets(); this.loadSalud(); this.loadPortal();
@@ -5453,8 +5651,12 @@ class Component extends DCLogic {
   async loadSalud(){
     const q=f=>`${SOP.url}/rest/v1/salud?${f}&order=creado.desc&limit=14`;
     try{
-      let r=await fetch(q(`caso_id=eq.${encodeURIComponent(SOP.caso)}`),{headers:H});
+      let r=await fetch(q(`caso_id=eq.${SOP.casoId}`),{headers:H});
       let rows=r.ok?await r.json():null;
+      if(!rows||!rows.length){
+        r=await fetch(q(`caso_id=eq.${encodeURIComponent(SOP.caso)}`),{headers:H});
+        rows=r.ok?await r.json():null;
+      }
       if(!rows||!rows.length){
         const r2=await fetch(q(`cliente=eq.${encodeURIComponent(SOP.cliente)}`),{headers:H});
         if(r2.ok) rows=await r2.json();
@@ -5530,8 +5732,9 @@ class Component extends DCLogic {
   renderVals(){
     const s=this.state, p=s.page, chat=CHATS[s.chatSel]||CHATS[0];
     const d=k=>p===k?'block':'none';
+    const pg={pgTablero:p==='tablero',pgVentas:p==='ventas',pgBit:p==='bit',pgProd:p==='prod',pgEnt:p==='ent',pgCrm:p==='crm',pgFin:p==='fin',pgBot:p==='bot',pgFe:p==='fe'};
     const cliPorId={}; (s.clientesL||[]).forEach(c=>{ if(c.id) cliPorId[c.id]=c; });
-    const ventas=s.ventas.map(v=>{ const fuente=v.fuente||'Manual';
+    const ventas=(this._mvV===s.ventas&&this._mvC===s.clientesL)?this._mvR:(this._mvR=s.ventas.map(v=>{ const fuente=v.fuente||'Manual';
       // El nombre sale de la ficha del cliente, no de la copia guardada en la venta.
       const cv=v.clienteId&&cliPorId[v.clienteId];
       if(cv&&cv.nombre) v={...v,cliente:cv.nombre};
@@ -5544,13 +5747,14 @@ class Component extends DCLogic {
         unidades:un, costoUnit:cu, tipoCli:v.tipoCli||'Detallista', tcTono:TC_TONO[v.tipoCli||'Detallista']||'neutral',
         unidadesTxt:String(un), costoTotal:cu*un, margenNum:mg,
         margen:(mg<0?'−':'')+'$'+Math.abs(Math.round(mg)).toLocaleString('es-CO'),
-        margenCls:mg<0?'down':'up'}; });
+        margenCls:mg<0?'down':'up'}; }));
+    this._mvV=s.ventas; this._mvC=s.clientesL;
     const hoyIso=this.diaHoy();
     const menos=n=>{ const d=new Date(hoyIso+'T00:00:00'); d.setDate(d.getDate()-n);
       return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-'); };
     const rg=s.fRango==='hoy'?{de:hoyIso,a:hoyIso}
       :s.fRango==='sem'?{de:menos(6),a:hoyIso}
-      :s.fRango==='mes'?{de:menos(29),a:hoyIso}
+      :s.fRango==='mes'?{de:(s.vMes||hoyIso.slice(0,7))+'-01',a:(s.vMes||hoyIso.slice(0,7))+'-31'}
       :s.fRango==='rango'?{de:s.fDesde||'',a:s.fHasta||''}
       :{de:'',a:''};
     const enRango=v=>{ const f=String(v.fechaIso||'');
@@ -5558,13 +5762,15 @@ class Component extends DCLogic {
       if(rg.a&&f>rg.a) return false;
       return true; };
     const medioDe=v=>String(v.medio||'—');
+    const qv=this._sinTilde(s.qVen||'').trim();
     const vf=ventas.filter(v=>(s.fVenta==='Todas'||v.tipo===s.fVenta)
       &&(s.fTipoCli==='Todos'||v.tipoCli===s.fTipoCli)
       &&(s.fFuente==='Todas'||v.fuente===s.fFuente)
       &&(s.fMedio==='Todos'||medioDe(v)===s.fMedio)
       &&(s.fProd==='Todos'||this.desglosePedido(v,0).some(x=>x.nombre===s.fProd))
-      &&(s.fEstado==='Todos'||v.estado===s.fEstado)
-      &&enRango(v));
+      &&(s.fEstado==='Todos'||v.estado===s.fEstado||(s.fEstado==='Por cobrar'&&(v.estado==='Pendiente'||v.estado==='Fallido')))
+      &&enRango(v)
+      &&(!qv||[v.id,v.pedido,v.cliente,v.producto,v.zona,v.celular,v.medio,v.estado].map(x=>this._sinTilde(x)).join(' ').includes(qv)));
     // Los medios salen de las ventas reales, no de una lista quemada.
     const mediosL=Array.from(new Set(ventas.map(medioDe).filter(x=>x&&x!=='—'))).sort();
     // Las opciones son variedades: un pedido mixto no es una opción de
@@ -5589,7 +5795,7 @@ class Component extends DCLogic {
       if(s.fFuente&&s.fFuente!=='Todas') pz.push(s.fFuente);
       if(s.fRango==='hoy') pz.push('hoy');
       else if(s.fRango==='sem') pz.push('esta semana');
-      else if(s.fRango==='mes') pz.push('este mes');
+      else if(s.fRango==='mes'){ const m=s.vMes||hoyIso.slice(0,7); pz.push(MESES_LARGO[+m.slice(5,7)-1].toLowerCase()+(m.slice(0,4)!==hoyIso.slice(0,4)?' '+m.slice(0,4):'')); }
       else if(s.fDesde||s.fHasta) pz.push('rango elegido');
       return pz.length?pz.join(' · '):'histórico completo'; })();
     const runMs=s.bitRun?Math.max(0,Date.now()-s.bitRun.t0):0;
@@ -5657,6 +5863,19 @@ class Component extends DCLogic {
     const mesPrev=iAct>0?mesesOrd[iAct-1]:mesesOrd[mesesOrd.length-2];
     const ing=k=>porMes[k]||0;
     const ingMes=ing(mesAct), ingPrev=mesPrev?ing(mesPrev):0;
+    // Comparación justa: el mes en curso contra el mismo tramo (1–N) del mes
+    // anterior. Un mes ya cerrado se compara contra el mes anterior completo.
+    const hoyF=this.diaHoy(), enCurso=mesAct===hoyF.slice(0,7), corte=enCurso?+hoyF.slice(8,10):31;
+    const mesAnt=(()=>{ const [y,m]=mesAct.split('-').map(Number); const d=new Date(y,m-2,1);
+      return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'); })();
+    const enTramo=(v,k)=>kMes(v)===k&&(+String(v.fechaIso||'').slice(8,10)||1)<=corte;
+    const sumaV=l=>l.reduce((a,v)=>a+(Number(v.valorNum)||0),0);
+    const vale=v=>v.estado!=='Cancelado'&&v.estado!=='Anulado';
+    const ingPrevT=sumaV(pag.filter(v=>enTramo(v,mesAnt)));
+    const vendMes=sumaV((s.ventas||[]).filter(v=>vale(v)&&kMes(v)===mesAct));
+    const vendPrevT=sumaV((s.ventas||[]).filter(v=>vale(v)&&enTramo(v,mesAnt)));
+    const tramoTxt=(enCurso?'1–'+corte+' ':'')+MESES[+mesAnt.slice(5,7)-1];
+    const cmpTxt=(a,b)=>b?(a>=b?'▲ ':'▼ ')+Math.abs(Math.round((a-b)/b*100))+'% vs. '+tramoTxt:'Sin datos en '+tramoTxt;
     const seis=mesesOrd.slice(-6);
     const maxMes=Math.max(1,...seis.map(ing));
     const pagMes=pag.filter(v=>kMes(v)===mesAct);
@@ -5767,8 +5986,11 @@ class Component extends DCLogic {
       menuFuente:s.fMenu==='fuente',
       abrirMenuFuente:()=>this.setState(st=>({fMenu:st.fMenu==='fuente'?null:'fuente'})),
       rangos:[['todas','Todas'],['hoy','Hoy'],['sem','Semana'],['mes','Mes']]
-        .map(([v,l])=>({label:l,on:s.fRango===v?'on':'',pick:()=>this.setState({fRango:v,fDesde:'',fHasta:'',vTope:60})})),
+        .map(([v,l])=>({label:l,on:s.fRango===v?'on':'',pick:()=>this.setState({fRango:v,vMes:null,fDesde:'',fHasta:'',vTope:60})})),
       fDesde:s.fDesde, fHasta:s.fHasta,
+      vMesOn:s.fRango==='mes',
+      vMesTitulo:(()=>{ const m=s.vMes||this.diaHoy().slice(0,7); return MESES_LARGO[+m.slice(5,7)-1]+' '+m.slice(0,4); })(),
+      vMesPrev:()=>this.moverMesVentas(-1), vMesNext:()=>this.moverMesVentas(1),
       setDesde:e=>this.setState({fDesde:e.target.value,fRango:'rango'}),
       setHasta:e=>this.setState({fHasta:e.target.value,fRango:'rango'}),
       rangoResumen:(()=>{ const n=vf.length;
@@ -5776,6 +5998,12 @@ class Component extends DCLogic {
         if(!n) return 'Sin ventas en el rango seleccionado.';
         return n+(n===1?' venta':' ventas')+' · $'+Math.round(t).toLocaleString('es-CO')+' pagados'; })(),
       catalogo:this.catalogoActual().map(c=>({nombre:c.nombre,etiqueta:c.corto||c.nombre})),
+      kVendido:'$'+Math.round(vf.filter(v=>v.estado!=='Cancelado'&&v.estado!=='Anulado').reduce((a,v)=>a+(Number(v.valorNum)||0),0)).toLocaleString('es-CO'),
+      ...(()=>{ const pc=vf.filter(v=>v.estado==='Pendiente'||v.estado==='Fallido');
+        return {kCobrar:'$'+Math.round(pc.reduce((a,v)=>a+(Number(v.valorNum)||0),0)).toLocaleString('es-CO'),
+          kCobrarSub:pc.length?pc.length+(pc.length===1?' venta pendiente o fallida':' ventas pendientes o fallidas'):'Nada por cobrar en el período',
+          verPorCobrar:()=>this.setState({fEstado:'Por cobrar',vTope:60})}; })(),
+      kVendidoSub:'$'+Math.round(vfPag.reduce((a,v)=>a+(Number(v.valorNum)||0),0)).toLocaleString('es-CO')+' ingresados · '+vfPag.length+(vfPag.length===1?' venta pagada':' ventas pagadas'),
       kIngresos:'$'+Math.round(vfPag.reduce((a,v)=>a+(Number(v.valorNum)||0),0)).toLocaleString('es-CO'),
       kIngresosSub:vfPag.length+(vfPag.length===1?' venta pagada':' ventas pagadas')+' · '+periodo,
       kTotal:String(vf.length),
@@ -5980,7 +6208,10 @@ class Component extends DCLogic {
       generarSemana:this.generarSemana,
       eDias:(()=>{ const lun=this.semanaActual();
         const pesos=n=>'$'+Math.round(n||0).toLocaleString('es-CO');
-        return [['martes',this.masDias(lun,1)],['viernes',this.masDias(lun,4)]].map(([dia,fecha])=>{
+        const NOMD=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+        const fijos=[this.masDias(lun,1),this.masDias(lun,4)];
+        const extra=[...new Set((s.entL||[]).map(e=>e.fecha).filter(f=>f&&f>=lun&&f<=this.masDias(lun,6)&&!fijos.includes(f)))];
+        return [...fijos,...extra].sort().map(fecha=>[NOMD[new Date(fecha+'T00:00:00').getDay()],fecha]).map(([dia,fecha])=>{
           const sueltas=(s.entL||[]).filter(e=>e.fecha===fecha);
           const un=sueltas.reduce((a,e)=>a+(Number(e.unidades)||0),0);
           const val=sueltas.reduce((a,e)=>a+(Number(e.valor)||0),0);
@@ -6005,14 +6236,14 @@ class Component extends DCLogic {
             g.valor+=Number(e.valor)||0;
             if(e.recibido_por) g.recibido_por=e.recibido_por;
           });
-          return {dia:dia==='martes'?'Martes':'Viernes',
+          return {dia:dia.charAt(0).toUpperCase()+dia.slice(1),
             fecha:fecha.slice(8)+' '+MESES[+fecha.slice(5,7)-1],
             resumen:grupos.length?grupos.length+(grupos.length===1?' entrega · ':' entregas · ')+un+' paquetes · '+pesos(val)
               :'Sin entregas programadas',
             vacio:!grupos.length,
             ...(()=>{ const pend=grupos.filter(g=>['Borrador','Programada','En ruta'].includes(g.estado));
               const bor=pend.filter(g=>g.estado==='Borrador').length;
-              const diaTxt=dia==='martes'?'martes':'viernes';
+              const diaTxt=dia;
               return {hayPend:pend.length>0&&!s.eTodoCorre,
                 sinPreguntar:s.eTodo!==fecha, preguntando:s.eTodo===fecha,
                 todoTxt:'Marcar todas entregadas ('+pend.length+')',
@@ -6042,7 +6273,7 @@ class Component extends DCLogic {
                   unidades:e.unidades+' paquetes',
                   valor:'$'+Math.round(e.valor||0).toLocaleString('es-CO'),
                   fecha:e.fecha.slice(8)+' '+MESES[+e.fecha.slice(5,7)-1],
-                  dia:new Date(e.fecha+'T00:00:00').getDay()===2?'martes':'viernes'},
+                  dia:this.diaSemana(e.fecha)},
                   e.celular||'',ev); },
               confirmar:()=>this.confirmarEntrega(e),
               salir:()=>this.cambiarEstadoEntrega(e.ids,'En ruta'),
@@ -6217,6 +6448,9 @@ class Component extends DCLogic {
       pfNombre:s.pf?s.pf.nombre:'', pfSku:s.pf?s.pf.sku:'', pfTipo:s.pf?s.pf.tipo:'Cherry redondo',
       pfGramaje:s.pf?s.pf.gramaje:'', pfPrecio:s.pf?s.pf.precio:'', pfCosto:s.pf?s.pf.costo:'',
       pfDist:s.pf?s.pf.dist:'', pfMay:s.pf?s.pf.may:'',
+      pfExtras:TIPOS_CLIENTE.slice(3).map(k=>({label:'Precio '+k.toLowerCase(),
+        valor:s.pf&&s.pf.extra?(s.pf.extra[k]||''):'',
+        set:e=>{ const v=e.target.value; this.setState(st=>({pf:{...st.pf,extra:{...(st.pf.extra||{}),[k]:v}}})); }})),
       pfActivoCls:s.pf&&s.pf.activo?'on':'',
       tiposProducto:['Cherry redondo','Cherry uva','Otro'],
       pfMargen:(()=>{ if(!s.pf) return '';
@@ -6238,7 +6472,7 @@ class Component extends DCLogic {
       guardarProducto:this.guardarProducto,
       goCrm:()=>{ this.setState({page:'crm'}); if(window.innerWidth<=700) window.scrollTo(0,0); }, goFin:()=>{ this.setState({page:'fin'}); if(window.innerWidth<=700) window.scrollTo(0,0); },
       goSop:()=>this.setState({page:'sop'}),
-      dTablero:d('tablero'), dVentas:d('ventas'), dCrm:d('crm'), dFin:d('fin'), dSop:d('sop'),
+      ...pg, dTablero:d('tablero'), dVentas:d('ventas'), dCrm:d('crm'), dFin:d('fin'), dSop:d('sop'),
       ventasHoyCount:(()=>{ const hoy=this.fechaCortaIso(this.diaHoy());
         return s.ventas.filter(v=>v.fecha===hoy||v.fecha==='27 ago').length; })(),
       estadosSel:['Pagado','Pendiente','Fallido'],
@@ -6332,8 +6566,9 @@ class Component extends DCLogic {
         elegir:()=>this.setState(st=>({nn:{...st.nn,tipo:t}}))})),
       fiNovPh:NOV_PH[(s.nn&&s.nn.tipo)]||NOV_PH.Preferencia,
       qCrm:s.qCrm||'', hayQCrm:!!(s.qCrm||'').trim(),
-      setQCrm:e=>{ const v=e.target.value; this.setState({qCrm:v,cTope:60}); },
-      limpiarQCrm:()=>this.setState({qCrm:'',cTope:60}),
+      qCrmKey:'qc'+(s.qCrmK||0),
+      setQCrm:e=>{ const v=e.target.value; clearTimeout(this._tQCrm); this._tQCrm=setTimeout(()=>this.setState({qCrm:v,cTope:60}),180); },
+      limpiarQCrm:()=>{ clearTimeout(this._tQCrm); this.setState(st=>({qCrm:'',qCrmK:(st.qCrmK||0)+1,cTope:60})); },
       hayMasClientes:cf.length>s.cTope,
       clientesMostrados:'Mostrando '+Math.min(s.cTope,cf.length)+' de '+cf.length+' clientes',
       verMasClientes:()=>this.setState(st=>({cTope:st.cTope+60})),
@@ -6363,7 +6598,7 @@ class Component extends DCLogic {
       fMedioOn:s.fMedio==='Todos'?'':'on',
       menuMedio:s.fMenu==='medio',
       abrirMenuMedio:()=>this.setState(st=>({fMenu:st.fMenu==='medio'?null:'medio'})),
-      estadosVenta:['Todos','Pagado','Pendiente','Fallido'].map(l=>({valor:l,
+      estadosVenta:['Todos','Pagado','Pendiente','Fallido','Por cobrar'].map(l=>({valor:l,
         label:l==='Todos'?'Estado':l,
         fondo:s.fEstado===l?'var(--paper)':'transparent',
         pick:()=>this.setState({fEstado:l,vTope:60,fMenu:null})})),
@@ -6371,9 +6606,12 @@ class Component extends DCLogic {
       fEstadoOn:s.fEstado==='Todos'?'':'on',
       menuEstado:s.fMenu==='estado',
       abrirMenuEstado:()=>this.setState(st=>({fMenu:st.fMenu==='estado'?null:'estado'})),
-      hayFiltros:s.fTipoCli!=='Todos'||s.fProd!=='Todos'||s.fMedio!=='Todos'||s.fEstado!=='Todos'||s.fRango!=='todas'||!!s.fDesde||!!s.fHasta,
-      limpiarFiltros:()=>this.setState({fVenta:'Todas',fFuente:'Todas',fTipoCli:'Todos',fProd:'Todos',fMedio:'Todos',fEstado:'Todos',
-        fRango:'todas',fDesde:'',fHasta:'',fMenu:null,vTope:60}),
+      qVenIni:s.qVen||'', qVenKey:'qv'+(s.qVenK||0), hayQVen:!!(s.qVen||'').trim(),
+      setQVen:e=>{ const v=e.target.value; clearTimeout(this._tQVen); this._tQVen=setTimeout(()=>this.setState({qVen:v,vTope:60}),180); },
+      limpiarQVen:()=>{ clearTimeout(this._tQVen); this.setState(st=>({qVen:'',qVenK:(st.qVenK||0)+1,vTope:60})); },
+      hayFiltros:!!(s.qVen||'').trim()||s.fTipoCli!=='Todos'||s.fProd!=='Todos'||s.fMedio!=='Todos'||s.fEstado!=='Todos'||s.fRango!=='mes'||!!s.vMes||!!s.fDesde||!!s.fHasta,
+      limpiarFiltros:()=>this.setState(st=>({qVen:'',qVenK:(st.qVenK||0)+1,fVenta:'Todas',fFuente:'Todas',fTipoCli:'Todos',fProd:'Todos',fMedio:'Todos',fEstado:'Todos',
+        fRango:'mes',vMes:null,fDesde:'',fHasta:'',fMenu:null,vTope:60})),
       abrirMenuTipo:()=>this.setState(st=>({fMenu:st.fMenu==='tipo'?null:'tipo'})),
       cTodosCls:cf.length&&cf.every(c=>(s.cSel||{})[c.id])?'on':'',
       cMarcarTodos:()=>{ const todos=cf.length&&cf.every(c=>(this.state.cSel||{})[c.id]);
@@ -6505,10 +6743,13 @@ class Component extends DCLogic {
         const rep=dos+tres;
         const vRep=fams.filter(f=>f.n>1).reduce((a,f)=>a+f.v,0);
         const pc=n=>total?Math.round(n/total*100)+'%':'0%';
-        const delMes=ventas.filter(v=>kMes(v)===mesAct);
-        const pend=delMes.filter(v=>v.estado==='Pendiente');
-        const fall=delMes.filter(v=>v.estado==='Fallido');
+        const pend=ventas.filter(v=>v.estado==='Pendiente');
+        const fall=ventas.filter(v=>v.estado==='Fallido');
         const sum=a=>a.reduce((x,v)=>x+(v.valorNum||0),0);
+        const hoyT=new Date(this.diaHoy()+'T00:00:00').getTime();
+        const edad=v=>{ const f=String(v.fechaIso||'').slice(0,10); return f?Math.max(0,Math.round((hoyT-new Date(f+'T00:00:00').getTime())/864e5)):0; };
+        const deuda=[...pend,...fall].map(v=>({v,d:edad(v)})).sort((a,b)=>b.d-a.d);
+        const tramo=(a,b)=>sum(deuda.filter(x=>x.d>=a&&x.d<=b).map(x=>x.v));
         return {
           tbRecompra:[
             {nombre:'Compraron una sola vez',dato:una+' · '+pc(una),tono:'neutral'},
@@ -6524,17 +6765,29 @@ class Component extends DCLogic {
           tbFallidoTono:fall.length?'danger':'neutral',
           tbFallidoVal:usd(sum(fall)),
           tbCarteraNota:(pend.length||fall.length)
-            ? 'Cobros que no han entrado. Un fallido suele ser tarjeta rechazada: se reintenta desde la venta.'
-            : 'Todo cobrado en '+etiqMes+'. Sin ventas pendientes ni fallidas.',
+            ? 'Todo lo que no ha entrado, de cualquier mes. Tocá una venta para registrar el pago.'
+            : 'Sin ventas pendientes ni fallidas.',
+          tbCarteraTotal:usd(sum(pend)+sum(fall)),
+          tbCarteraSub:pend.length+(pend.length===1?' pendiente':' pendientes')+' · '+fall.length+(fall.length===1?' fallida':' fallidas'),
+          tbCarteraTramos:[['0 a 7 días',0,7],['8 a 30 días',8,30],['Más de 30 días',31,1e5]]
+            .map(([l,a,b],i)=>({label:l,valor:usd(tramo(a,b)),tono:i===2&&tramo(a,b)>0?'danger':i===1&&tramo(a,b)>0?'warn':'neutral'})),
+          tbHayDeuda:deuda.length>0,
+          tbDeudores:deuda.slice(0,6).map(({v,d})=>({cliente:v.cliente||'Sin nombre',
+            sub:[v.pedido,v.estado,d===0?'hoy':'hace '+d+(d===1?' día':' días')].filter(Boolean).join(' · '),
+            valor:v.valor,abrir:()=>this.editarVenta(v)})),
+          tbMasDeuda:deuda.length>6?'Ver las '+deuda.length+' en Ventas':'Ver en Ventas',
+          verCartera:()=>{ this.setState({page:'ventas',fRango:'todas',fDesde:'',fHasta:'',fEstado:'Por cobrar',vTope:60}); if(window.innerWidth<=700) window.scrollTo(0,0); },
         };
       })(),
       tbActivas:(()=>{ const n=s.clientesL.filter(c=>this.etapaVista(c)==='Suscrito').length;
         return n?n+(n===1?' suscrito':' suscritos'):'Ninguno suscrito'; })(),
       finIngresos:usd(ingMes),
-      finIngresosDelta:mesPrev
-        ? (ingMes>=ingPrev?'▲ ':'▼ ')+(ingPrev?Math.abs(Math.round((ingMes-ingPrev)/ingPrev*100))+'% vs. '+MESES[+mesPrev.slice(5,7)-1]:'primer mes con datos')
-        : 'Primer mes con datos',
-      finIngresosTono:ingMes>=ingPrev?'up':'down',
+      finIngresosDelta:cmpTxt(ingMes,ingPrevT),
+      finIngresosTono:!ingPrevT?'':ingMes>=ingPrevT?'up':'down',
+      tbVendido:usd(vendMes),
+      tbVendidoDelta:cmpTxt(vendMes,vendPrevT),
+      tbVendidoTono:!vendPrevT?'':vendMes>=vendPrevT?'up':'down',
+      tbIngresadoSub:usd(ingMes)+' ingresados · '+cmpTxt(ingMes,ingPrevT),
       finGastos:usd(totGasto),
       finGastosSub:gastosMes.length?gastosMes.length+(gastosMes.length===1?' gasto registrado':' gastos registrados'):'Sin gastos del mes',
       finUtilidad:usd(util),
@@ -6742,7 +6995,23 @@ class Component extends DCLogic {
       nvZonaTxt:s.nv.zona||'Elegí la zona', fdZonaTxt:(s.fd&&s.fd.bebe)||'Elegí la zona',
       nlZonaTxt:(s.nl&&s.nl.bebe)||'Elegí la zona', sfZonaTxt:(s.sf&&s.sf.zona)||'Elegí la zona',
       cerrarSel:()=>this.setState({nvSel:null}),
+      claseMain:'main'+(s.privado?' privado':''),
+      ojoCls:'ojo-cifras'+(s.privado?' on':''), ojoAbierto:!s.privado, ojoCerrado:!!s.privado,
+      ojoTxt:s.privado?'Mostrar cifras':'Ocultar cifras',
+      alternarOjo:()=>{ const v=!this.state.privado;
+        try{ localStorage.setItem('gb_privado',v?'1':'0'); }catch(e){}
+        if(!v) document.querySelectorAll('.main .cifra').forEach(el=>el.classList.remove('cifra'));
+        this.setState({privado:v}); },
       selAbierto:!!s.nvSel,
+      selEsCanal:!!s.nvSel&&['canal','fdTipo','sfCanal'].indexOf(s.nvSel.campo)>=0,
+      selNuevoCanal:()=>this.abrirNuevoCanal(s.nvSel&&s.nvSel.campo),
+      nuevoCanal:()=>this.abrirNuevoCanal(null),
+      pfNuevoCanal:()=>this.abrirNuevoCanal('pf'),
+      dCanalForm:s.nc?'flex':'none', ncNombre:s.nc?s.nc.nombre:'',
+      setNcNombre:e=>{ const v=e.target.value; this.setState(st=>({nc:{...st.nc,nombre:v}})); },
+      ncTecla:e=>{ if(e.key==='Enter') this.crearCanal(); },
+      cerrarCanal:()=>this.setState({nc:null}), guardarCanal:this.crearCanal,
+      canalesNota:'Canales de hoy: '+TIPOS_CLIENTE.join(' · ')+'.',
       selTop:s.nvSel?s.nvSel.y+'px':'0px',
       selLeft:s.nvSel?s.nvSel.x+'px':'0px',
       selAncho:s.nvSel?s.nvSel.w+'px':'150px',
@@ -6816,7 +7085,7 @@ class Component extends DCLogic {
         const co=this.costoUnitDe(lns[0].nombre);
         const tot=pu*un, mg=tot-co*un;
         const r=(s.productos||[]).find(x=>x.nombre===lns[0].nombre);
-        const propio=r?(tc==='Distribuidor'?r.precio_distribuidor:tc==='Mayorista'?r.precio_mayorista:r.precio_cop):null;
+        const propio=r?precioCanalDe(r,tc):null;
         return '$'+pu.toLocaleString('es-CO')+' × '+un+' = $'+tot.toLocaleString('es-CO')
           +' · margen $'+mg.toLocaleString('es-CO')
           +((tc!=='Detallista'&&propio==null)?' · '+tc.toLowerCase()+' sin precio propio: paga la lista':''); })(),
