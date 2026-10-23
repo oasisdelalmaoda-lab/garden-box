@@ -3673,7 +3673,7 @@ class Component extends DCLogic {
     const correo=(this.state.auth.correo||'').trim();
     if(!correo){ this.setState(st=>({auth:{...st.auth,err:'Escribe tu correo y vuelve a darle'}})); return; }
     try{
-      const r=await fetch(SB_URL+'/auth/v1/recover',{method:'POST',
+      const r=await fetch(SB_URL+'/auth/v1/recover?redirect_to='+encodeURIComponent(window.location.origin+window.location.pathname),{method:'POST',
         headers:{apikey:SB_KEY,'Content-Type':'application/json'},
         body:JSON.stringify({email:correo})});
       if(!r.ok){ const j=await r.json().catch(()=>null);
@@ -4573,21 +4573,21 @@ class Component extends DCLogic {
     window.addEventListener('resize',this._cerrarEst);
     this.cargarCobros();
     try{
-      const b=JSON.parse(localStorage.getItem('umm-bitacora-v1')||'null');
+      const b=JSON.parse(localStorage.getItem('gb-bitacora-v1')||'null');
       if(b&&Array.isArray(b.log)){ this.setState({bit:b.log,bitRun:b.run||null}); if(b.run) this.startTick(); }
-      const v=JSON.parse(localStorage.getItem('umm-ventas-hist-v1')||'null');
+      const v=JSON.parse(localStorage.getItem('gb-ventas-hist-v1')||'null');
       if(v&&Array.isArray(v)&&v.length) this.setState(st=>({ventas:[...st.ventas,...v]}));
-      const a=JSON.parse(localStorage.getItem('umm-auto-v1')||'null');
+      const a=JSON.parse(localStorage.getItem('gb-auto-v1')||'null');
       if(a&&typeof a==='object') this.setState({auto:a});
-      const c=JSON.parse(localStorage.getItem('umm-crono-v2')||'null');
+      const c=JSON.parse(localStorage.getItem('gb-crono-v2')||'null');
       if(c&&Array.isArray(c)&&c.length) this.setState({crono:c});
-      const fj=JSON.parse(localStorage.getItem('umm-fijos-v1')||'null');
+      const fj=JSON.parse(localStorage.getItem('gb-fijos-v1')||'null');
       if(fj&&Array.isArray(fj)) this.setState({fijos:fj});
-      const pd=JSON.parse(localStorage.getItem('umm-pend-v2')||'null');
+      const pd=JSON.parse(localStorage.getItem('gb-pend-v2')||'null');
       if(pd&&Array.isArray(pd)&&pd.length) this.setState({pendL:pd});
-      const q=JSON.parse(localStorage.getItem('umm-quest-v2')||'null');
+      const q=JSON.parse(localStorage.getItem('gb-quest-v2')||'null');
       if(q&&Array.isArray(q)&&q.length) this.setState({questL:q});
-      const agv=JSON.parse(localStorage.getItem('umm-agente-v1')||'null');
+      const agv=JSON.parse(localStorage.getItem('gb-agente-v1')||'null');
       if(agv&&typeof agv==='object') this.setState({ag:{...AG_DEF,...agv}});
     }catch(e){}
     this._act=Date.now();
@@ -4623,11 +4623,11 @@ class Component extends DCLogic {
     this.setState(st=>{
       const auto={...st.auto}, d={...(auto[dia]||{})};
       d[mod]=(d[mod]||0)+15000; auto[dia]=d;
-      try{ localStorage.setItem('umm-auto-v1',JSON.stringify(auto)); }catch(e){}
+      try{ localStorage.setItem('gb-auto-v1',JSON.stringify(auto)); }catch(e){}
       return {auto,activo:true};
     });
   }
-  guardaCrono(crono){ this.setState({crono}); try{ localStorage.setItem('umm-crono-v2',JSON.stringify(crono)); }catch(e){} }
+  guardaCrono(crono){ this.setState({crono}); try{ localStorage.setItem('gb-crono-v2',JSON.stringify(crono)); }catch(e){} }
 
   editaFase(id,campo,val){
     const py=this.state.cronoPy;
@@ -4650,7 +4650,7 @@ class Component extends DCLogic {
       this.sb.from('pendientes').update({resuelto:nuevo,resuelto_en:nuevo?new Date().toISOString():null}).eq('id',id)
         .then(({error})=>{ if(error) this.flash('No pude guardar el pendiente'); });
     }else{
-      try{ localStorage.setItem('umm-pend-v2',JSON.stringify(pendL)); }catch(e){}
+      try{ localStorage.setItem('gb-pend-v2',JSON.stringify(pendL)); }catch(e){}
     }
   }
 
@@ -4663,7 +4663,7 @@ class Component extends DCLogic {
     const questL=this.state.questL.map(q=>q.id===id?{...q,pregunta:texto}:q);
     this.setState({questL,qEdit:null});
     if(!this.enNube()){
-      try{ localStorage.setItem('umm-quest-v2',JSON.stringify(questL)); }catch(e2){}
+      try{ localStorage.setItem('gb-quest-v2',JSON.stringify(questL)); }catch(e2){}
       return;
     }
     const {data,error}=await this.sb.from('respuestas_cliente')
@@ -4678,7 +4678,7 @@ class Component extends DCLogic {
     const questL=prev.filter(x=>x.id!==id);
     this.setState({questL,qEdit:null});
     if(!this.enNube()){
-      try{ localStorage.setItem('umm-quest-v2',JSON.stringify(questL)); }catch(e){}
+      try{ localStorage.setItem('gb-quest-v2',JSON.stringify(questL)); }catch(e){}
       return;
     }
     const {error}=await this.sb.from('respuestas_cliente').delete().eq('id',id);
@@ -4692,7 +4692,7 @@ class Component extends DCLogic {
     if(!this.enNube()){
       const questL=[...this.state.questL,{id:'q'+Date.now(),pregunta:texto,respuesta:''}];
       this.setState({questL,qNueva:''});
-      try{ localStorage.setItem('umm-quest-v2',JSON.stringify(questL)); }catch(e){}
+      try{ localStorage.setItem('gb-quest-v2',JSON.stringify(questL)); }catch(e){}
       return;
     }
     // Va al final: el orden lo da la columna orden de la tabla.
@@ -4715,7 +4715,7 @@ class Component extends DCLogic {
           .then(({error})=>{ if(error) this.flash('No pude guardar la respuesta'); });
       },900);
     }else{
-      try{ localStorage.setItem('umm-quest-v2',JSON.stringify(questL)); }catch(e){}
+      try{ localStorage.setItem('gb-quest-v2',JSON.stringify(questL)); }catch(e){}
     }
   }
 
@@ -4782,7 +4782,7 @@ class Component extends DCLogic {
   stopTick(){ if(this._tick){ clearInterval(this._tick); this._tick=null; } }
 
   impRef=React.createRef();
-  saveBit(log,run){ try{ localStorage.setItem('umm-bitacora-v1',JSON.stringify({log,run})); }catch(e){} }
+  saveBit(log,run){ try{ localStorage.setItem('gb-bitacora-v1',JSON.stringify({log,run})); }catch(e){} }
   hhmmss(ms){ const t=Math.max(0,Math.floor(ms/1000)),h=Math.floor(t/3600),m=Math.floor(t%3600/60),g=t%60;
     return [h,m,g].map(n=>String(n).padStart(2,'0')).join(':'); }
   horas(ms){ return (ms/3600000).toFixed(1).replace('.',','); }
@@ -4956,8 +4956,8 @@ class Component extends DCLogic {
 
     const nuevas=filas.map(r=>this.filaAVenta(r));
     try{
-      const prev=JSON.parse(localStorage.getItem('umm-ventas-hist-v1')||'[]');
-      localStorage.setItem('umm-ventas-hist-v1',JSON.stringify([...prev,...nuevas]));
+      const prev=JSON.parse(localStorage.getItem('gb-ventas-hist-v1')||'[]');
+      localStorage.setItem('gb-ventas-hist-v1',JSON.stringify([...prev,...nuevas]));
     }catch(e){}
     this.setState(st=>({ventas:[...st.ventas,...nuevas],impCols:null,impRows:null,impMap:{},vTab:'registro',fFuente:'Histórico'}));
     this.flash(nuevas.length+' ventas cargadas · modo demo');
@@ -5253,7 +5253,7 @@ class Component extends DCLogic {
   // agente quede conectado pasa a la tabla agente_config de Supabase.
   guardaAg(patch){
     this.setState(st=>{ const ag={...st.ag,...patch};
-      try{ localStorage.setItem('umm-agente-v1',JSON.stringify(ag)); }catch(e){}
+      try{ localStorage.setItem('gb-agente-v1',JSON.stringify(ag)); }catch(e){}
       return {ag}; });
     this.subirAgente();
   }
@@ -5476,7 +5476,7 @@ class Component extends DCLogic {
       return;
     }
     this.setState({ag:{...AG_DEF,...this.agDeFila(r)},agGuardado:''});
-    try{ localStorage.setItem('umm-agente-v1',JSON.stringify(this.agDeFila(r))); }catch(e){}
+    try{ localStorage.setItem('gb-agente-v1',JSON.stringify(this.agDeFila(r))); }catch(e){}
   }
   // Se escribe con retardo: mientras el cliente teclea no se manda una
   // consulta por letra, pero al soltar el campo ya quedó en la base.
@@ -5497,7 +5497,7 @@ class Component extends DCLogic {
 
   guardaFijos(fijos){
     this.setState({fijos});
-    try{ localStorage.setItem('umm-fijos-v1',JSON.stringify(fijos)); }catch(e){}
+    try{ localStorage.setItem('gb-fijos-v1',JSON.stringify(fijos)); }catch(e){}
   }
 
   // el valor guardado es el total pagado; el PyG usa la base neta
